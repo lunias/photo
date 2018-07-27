@@ -3,8 +3,6 @@ package com.ethanaa.photo.controller;
 import com.ethanaa.photo.model.PhotoData;
 import com.ethanaa.photo.repository.PhotoDataRepository;
 import com.ethanaa.photo.service.PhotoService;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-import com.sun.xml.internal.ws.util.CompletedFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -49,6 +47,12 @@ public class PhotoController {
     public ResponseEntity<Page<PhotoData>> getAllPhotoData(Pageable pageable) {
 
         return ResponseEntity.ok(photoDataRepository.findAll(pageable));
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+
+        return ResponseEntity.ok("Hello there from backend!");
     }
 
     @PostMapping("/upload")

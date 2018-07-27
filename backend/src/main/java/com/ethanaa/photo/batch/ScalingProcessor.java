@@ -29,7 +29,7 @@ public class ScalingProcessor implements ItemProcessor<File, PhotoData> {
 
     static {
         try {
-            WATERMARK = ImageIO.read(new ClassPathResource("static/watermark.png").getFile());
+            WATERMARK = ImageIO.read(new ClassPathResource("static/watermark.png").getInputStream());
         } catch (IOException ioe) {
             LOG.error("Failed to load watermark!", ioe);
         }
