@@ -1,99 +1,120 @@
 <template>
-  <div>
-            <!-- START NAV -->
-        <nav class="navbar">
-                <div class="container">
-                    <div class="navbar-brand">
-                        <a class="navbar-item" href="../">
-                                <img src="@/assets/logo.png" alt="Logo">
-                            </a>
-                        <span class="navbar-burger burger" data-target="navbarMenu">
-                                <span></span>
-                        <span></span>
-                        <span></span>
-                        </span>
-                    </div>
-                    <div id="navbarMenu" class="navbar-menu">
-                        <div class="navbar-end">
-                            <a class="navbar-item is-active">
-                                    Home
-                                </a>
-                            <a class="navbar-item">
-                                    Examples
-                                </a>
-                            <a class="navbar-item">
-                                    Features
-                                </a>
-                            <a class="navbar-item">
-                                    Team
-                                </a>
-                            <a class="navbar-item">
-                                    Archives
-                                </a>
-                            <a class="navbar-item">
-                                    Help
-                                </a>
-                            <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link">
-                                        Account
-                                    </a>
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item">
-                                            Dashboard
-                                        </a>
-                                    <a class="navbar-item">
-                                            Profile
-                                        </a>
-                                    <a class="navbar-item">
-                                            Settings
-                                        </a>
-                                    <hr class="navbar-divider">
-                                    <div class="navbar-item">
-                                        Logout
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <!-- END NAV -->
-
+<div>
+  <!-- START NAV -->
+  <nav class="navbar">
     <div class="container">
-        <div id="flow">
-            <span class="flow-1"></span>
-            <span class="flow-2"></span>
-            <span class="flow-3"></span>
-        </div>
-        <div class="section">
-            <div class="box">
-                <div class="field has-addons">
-                    <div class="control is-expanded">
-                        <input class="input has-text-centered" type="search" placeholder="» » » » » » find me « « « « « «">
-                    </div>
-                    <div class="control">
-                        <a class="button is-info">Search</a>
-                    </div>
-                </div>
+      <div class="navbar-brand">
+        <a class="navbar-item" href="../">
+          <img src="@/assets/logo.png" alt="Logo">
+        </a>
+        <span class="navbar-burger burger" data-target="navbarMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </div>
+      <div id="navbarMenu" class="navbar-menu">
+        <div class="navbar-end">
+          <a class="navbar-item is-active">
+            Home
+          </a>
+          <a class="navbar-item">
+            Examples
+          </a>
+          <a class="navbar-item">
+            Features
+          </a>
+          <a class="navbar-item">
+            Team
+          </a>
+          <a class="navbar-item">
+            Archives
+          </a>
+          <a class="navbar-item">
+            Help
+          </a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Account
+            </a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item">
+                Dashboard
+              </a>
+              <a class="navbar-item">
+                Profile
+              </a>
+              <a class="navbar-item">
+                Settings
+              </a>
+              <hr class="navbar-divider">
+              <div class="navbar-item">
+                Logout
+              </div>
             </div>
-            <!-- Developers -->
-            <div class="row columns">
-                <div class="column is-one-third">
-                    <div class="card large">
-                        <div class="card-image">
-                            <figure class="image">
-                                <img src="https://images.unsplash.com/photo-1475778057357-d35f37fa89dd?dpr=1&auto=compress,format&fit=crop&w=1920&h=&q=80&cs=tinysrgb&crop=" alt="Image">
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-left">
-                                    <figure class="image is-96x96">
-                                        <img src="https://i.imgsafe.org/a4/a4bb9acc5e.jpeg" alt="Image">
-                                    </figure>
-                                </div>
-                                <div class="media-content">
-                                    <p class="title is-4 no-padding">Okinami</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- END NAV -->
+  
+  <div class="container">
+    <div id="flow">
+      <span class="flow-1"></span>
+      <span class="flow-2"></span>
+      <span class="flow-3"></span>
+    </div>
+    <div class="section">
+      <div class="box">
+        <ul id="upload-list">
+          <li v-for="photo in photos">{{photo.name}} - Error: {{photo.error}}, Success: {{photo.success}}</li>
+        </ul>
+        <file-upload
+          class="button is-white"
+          ref="upload"
+          v-model="photos"
+          post-action="/photos/upload"
+          @input-file="inputFile"
+          @input-filter="inputFilter"
+          extensions="gif,jpg,jpeg,png,webp"
+          accept="image/png,image/gif,image/jpeg,image/webp"
+          :multiple="true">
+          Select files
+        </file-upload>
+        <button class="button is-white" v-show="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true" type="button">Start upload</button>
+        <button class="button is-white" v-show="$refs.upload && $refs.upload.active" @click.prevent="$refs.upload.active = false" type="button">Stop upload</button>  
+      </div>
+    </div>
+    <div class="section">
+      <div class="box">
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input has-text-centered" type="search" placeholder="» » » » » » find me « « « « « «">
+          </div>
+          <div class="control">
+            <a class="button is-info">Search</a>
+          </div>
+        </div>
+      </div>
+      <!-- Developers -->
+      <div class="row columns">
+        <div class="column is-one-third">
+          <div class="card large">
+            <div class="card-image">
+              <figure class="image">
+                <img src="https://images.unsplash.com/photo-1475778057357-d35f37fa89dd?dpr=1&auto=compress,format&fit=crop&w=1920&h=&q=80&cs=tinysrgb&crop=" alt="Image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://i.imgsafe.org/a4/a4bb9acc5e.jpeg" alt="Image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4 no-padding">Okinami</p>
                                     <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
                                     <p class="subtitle is-6">Lead Developer</p>
                                 </div>
@@ -418,18 +439,106 @@
             </div>
         </footer>
   </div>
-
-
 </template>
 
 <script>
-  import modalFX from '../../node_modules/bulma-modal-fx/dist/js/modal-fx.min.js' 
-  export default {
+import modalFX from '../../node_modules/bulma-modal-fx/dist/js/modal-fx.min.js'
+import FileUpload from 'vue-upload-component'
+export default {
     name: 'HelloWorld',
+    components: { FileUpload },
     data () {
-      return {
-        msg: 'Welcome to Your Vue.js App'
-      }
+        return {
+            photos: []
+        }
+    },
+    methods: {
+        inputFile(newFile, oldFile) {
+            if (newFile && !oldFile) {
+                // Add file
+            }
+
+            if (newFile && oldFile) {
+                // Update file
+
+                // Start upload
+                if (newFile.active !== oldFile.active) {
+                    console.log('Start upload', newFile.active, newFile)
+
+                    // min size
+                    if (newFile.size >= 0 && newFile.size < 100 * 1024) {
+                        newFile = this.$refs.upload.update(newFile, {error: 'size'})
+                    }
+                }
+
+                // Upload progress
+                if (newFile.progress !== oldFile.progress) {
+                    console.log('progress', newFile.progress, newFile)
+                }
+
+                // Upload error
+                if (newFile.error !== oldFile.error) {
+                    console.log('error', newFile.error, newFile)
+                }
+
+                // Uploaded successfully
+                if (newFile.success !== oldFile.success) {
+                    console.log('success', newFile.success, newFile)
+                }
+            }
+
+            if (!newFile && oldFile) {
+                // Remove file
+
+                // Automatically delete files on the server
+                if (oldFile.success && oldFile.response.id) {
+                    // $.ajax({
+                    //   type: 'DELETE',
+                    //   url: '/file/delete?id=' + oldFile.response.id,
+                    // });
+                }
+            }
+
+            // Automatic upload
+            if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
+                if (!this.$refs.upload.active) {
+                    this.$refs.upload.active = true
+                }
+            }
+        },
+        inputFilter(newFile, oldFile, prevent) {
+            if (newFile && !oldFile) {
+                // Add file
+                
+                // Filter non-image file
+                // Will not be added to files
+                if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
+                    return prevent()
+                }
+                
+                // Create the 'blob' field for thumbnail preview
+                newFile.blob = ''
+                let URL = window.URL || window.webkitURL
+                if (URL && URL.createObjectURL) {
+                    newFile.blob = URL.createObjectURL(newFile.file)
+                }
+            }
+
+            if (newFile && oldFile) {
+                // Update file
+                // Increase the version number
+                if (!newFile.version) {
+                    newFile.version = 0
+                }
+                newFile.version++
+            }
+
+            if (!newFile && oldFile) {
+                // Remove file
+                // Refused to remove the file
+                // return prevent()
+            }
+        }
     }
   }
 </script>
@@ -536,5 +645,8 @@ color: lemonchiffon;
 {color: crimson;}
 .fa
 {color: lemonchiffon;
-    margin: 10px}
+margin: 10px}
+#upload-list li {
+color: black;
+}
 </style>
