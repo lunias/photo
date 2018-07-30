@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "buefy": "^0.6.6",
+    "bulma-modal-fx": "^1.1.1",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.2",
     "vue-router": "^3.0.1"
