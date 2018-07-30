@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <button @click="callRestService()">
+    <button @click="callRestService()" v-if="false">
       CALL Spring Boot REST backend service</button>
-    <h3>{{ response }}</h3>
+    <h3 v-if="false">{{ response }}</h3>
     <router-view/>
   </div>
 </template>

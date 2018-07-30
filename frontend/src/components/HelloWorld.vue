@@ -1,346 +1,425 @@
 <template>
   <div>
-    <section class="hero is-info is-small">
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <p class="title">
-            Modal Cards
-          </p>
-          <p class="subtitle">
-            Subtitle
-          </p>
-        </div>
-      </div>
-    </section>
-    <div class="box cta">
-      <p class="has-text-centered">
-        <span class="tag is-primary">New</span> Here we have modal cards. When you click on them they will open functional modal examples.
-      </p>
-    </div>
-    <section class="container">
-      <div class="columns features">
-        <div class="column is-4">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://source.unsplash.com/RWnpyGtY1aU" alt="Placeholder image" class="modal-button" data-target="modal-image2">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4>Click on image above</h4>
-                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
-                <span class="button is-link modal-button" data-target="modal-image2">Image modal</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://source.unsplash.com/6Ticnhs1AG0" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4>Tempor orci dapibus ultrices in.</h4>
-                <p>Ut venenatis tellus in metus vulputate. Amet consectetur adipiscing elit pellentesque. Sed arcu non odio euismod lacinia at quis risus. Faucibus turpis in eu mi bibendum neque egestas cmonsu songue. Phasellus vestibulum lorem
-                sed risus.</p>
-                <span class="button is-link modal-button" data-target="modal-card">Modal Card</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4 modal-button" data-target="modal-image">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://i.imgsafe.org/ba/baa924a5e3.png" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4>Click anywhere on card</h4>
-                <p>Imperdiet dui accumsan sit amet nulla facilisi morbi. Fusce ut placerat orci nulla pellentesque dignissim enim. Libero id faucibus nisl tincidunt eget nullam. Commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                <span class="button is-link modal-button" data-target="modal-image">Image modal</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="columns features">
-        <div class="column is-4 modal-button" data-target="modal-card">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://i.imgsafe.org/3f/3f0c578f9d.jpeg" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4>Click anywhere on card to <br>expand into modal card</h4>
-                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
-                <span class="button is-link modal-button">Modal card</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card is-shady">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://source.unsplash.com/hLyd1LukQ7E" alt="butterfly image" class="modal-button" data-target="modal-image4">
-              </figure>
-            </div>
-            <div class="card-content  modal-button" data-target="modal-card2">
-              <div class="content">
-                <h4>Click anywhere on card to <br>expand into modal card - header image expands into bigger image</h4>
-                <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis.</p>
-                <span class="button is-link modal-button">Modal card</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <footer>
-      <section class="section">
-        <div class="container">
-          <div class="columns is-multiline">
-            <div class="column is-one-third">
-              <article class="notification media has-background-white">
-                <figure class="media-left">
-                  <span class="icon">
-                    <i class="has-text-warning fa fa-columns fa-lg"></i>
-                  </span>
-                </figure>
-                <div class="media-content">
-                  <div class="content">
-                    <h1 class="title is-size-4">Columns</h1>
-                    <p class="is-size-5 subtitle">
-                      The power of <strong>Flexbox</strong> in a simple interface
-                    </p>
-                  </div>
+            <!-- START NAV -->
+        <nav class="navbar">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="../">
+                                <img src="@/assets/logo.png" alt="Logo">
+                            </a>
+                        <span class="navbar-burger burger" data-target="navbarMenu">
+                                <span></span>
+                        <span></span>
+                        <span></span>
+                        </span>
+                    </div>
+                    <div id="navbarMenu" class="navbar-menu">
+                        <div class="navbar-end">
+                            <a class="navbar-item is-active">
+                                    Home
+                                </a>
+                            <a class="navbar-item">
+                                    Examples
+                                </a>
+                            <a class="navbar-item">
+                                    Features
+                                </a>
+                            <a class="navbar-item">
+                                    Team
+                                </a>
+                            <a class="navbar-item">
+                                    Archives
+                                </a>
+                            <a class="navbar-item">
+                                    Help
+                                </a>
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">
+                                        Account
+                                    </a>
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item">
+                                            Dashboard
+                                        </a>
+                                    <a class="navbar-item">
+                                            Profile
+                                        </a>
+                                    <a class="navbar-item">
+                                            Settings
+                                        </a>
+                                    <hr class="navbar-divider">
+                                    <div class="navbar-item">
+                                        Logout
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </article>
-            </div>
-            <div class="column is-one-third">
-              <article class="notification has-background-white media">
-                <figure class="media-left">
-                  <span class="icon has-text-info">
-                    <i class="fa fa-lg fa-wpforms"></i>
-                  </span>
-                </figure>
-                <div class="media-content">
-                  <div class="content">
-                    <h1 class="title is-size-4">Form</h1>
-                    <p class="is-size-5 subtitle">
-                      The indispensable <strong>form controls</strong>, designed for maximum clarity
-                    </p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="column is-one-third">
-              <article class="notification has-background-white media">
-                <figure class="media-left">
-                  <span class="icon has-text-danger">
-                    <i class="fa fa-lg fa-cubes"></i>
-                  </span>
-                </figure>
-                <div class="media-content">
-                  <div class="content">
-                    <h1 class="title is-size-4">Components</h1>
-                    <p class="is-size-5 subtitle">
-                      Advanced multi-part components with lots of possibilities
-                    </p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="column is-one-third">
-              <article class="notification has-background-white media">
-                <figure class="media-left">
-                  <span class="icon has-text-grey">
-                    <i class="fa fa-lg fa-cogs"></i>
-                  </span>
-                </figure>
-                <div class="media-content">
-                  <div class="content">
-                    <h1 class="title is-size-4">Modifiers</h1>
-                    <p class="is-size-5 subtitle">
-                      An <strong>easy-to-read</strong> naming system designed for humans
-                    </p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="column is-one-third">
-              <article class="notification has-background-white media">
-                <figure class="media-left">
-                  <span class="icon has-text-primary">
-                    <i class="fa fa-lg fa-superpowers"></i>
-                  </span>
-                </figure>
-                <div class="media-content">
-                  <div class="content">
-                    <h1 class="title is-size-4">Layout</h1>
-                    <p class="is-size-5 subtitle">
-                      Design the <strong>structure</strong> of your webpage with these CSS classes
-                    </p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="column is-one-third">
-              <article class="notification has-background-white media">
-                <figure class="media-left">
-                  <span class="icon has-text-danger">
-                    <i class="fa fa-lg fa-cube"></i>
-                  </span>
-                </figure>
-                <div class="media-content">
-                  <div class="content">
-                    <h1 class="title is-size-4">Elements</h1>
-                    <p class="is-size-5 subtitle">
-                      Essential interface elements that only require a <strong>single CSS class</strong>
-                    </p>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
+            </nav>
+            <!-- END NAV -->
+
+    <div class="container">
+        <div id="flow">
+            <span class="flow-1"></span>
+            <span class="flow-2"></span>
+            <span class="flow-3"></span>
         </div>
-      </section>
-      <div class="content has-text-centered">
-        <div class="control level-item">
-          <a href="https://github.com/dansup/bulma-templates">
-            <div class="tags has-addons">
-              <span class="tag is-dark">Bulma Templates</span>
-              <span class="tag is-info">MIT license</span>
+        <div class="section">
+            <div class="box">
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                        <input class="input has-text-centered" type="search" placeholder="» » » » » » find me « « « « « «">
+                    </div>
+                    <div class="control">
+                        <a class="button is-info">Search</a>
+                    </div>
+                </div>
             </div>
-          </a>
+            <!-- Developers -->
+            <div class="row columns">
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://images.unsplash.com/photo-1475778057357-d35f37fa89dd?dpr=1&auto=compress,format&fit=crop&w=1920&h=&q=80&cs=tinysrgb&crop=" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="https://i.imgsafe.org/a4/a4bb9acc5e.jpeg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">Okinami</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Lead Developer</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                The Beast stumbled in the dark for it could no longer see the path. It started to fracture and weaken, trying to reshape itself into the form of metal. Even the witches would no longer lay eyes upon it, for it had become hideous and twisted.
+                                <div class="background-icon"><span class="icon-twitter"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/uzDLtlPY8kQ" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="https://cdn.discordapp.com/avatars/244932903530659841/0c924a19fcf1b5c59bc9dc1b58b61bb0.jpg?size=1024" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">McSocks</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Developer</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                The soul of the Beast seemed lost forever. Then, by the full moon's light, a child was born; child with the unbridled soul of the Beast that would make all others pale in comparison.
+                                <div class="background-icon"><span class="icon-facebook"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/pe_R74hldW4" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="https://i.imgsafe.org/a5/a5e978ce20.jpeg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">The Conceptionist</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Developer</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                                <div class="background-icon"><span class="icon-barcode"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Developers -->
+
+            <!-- Staff -->
+            <div class="row columns is-multiline">
+                <div class="column is-one-third">
+                    <div class="card large round">
+                        <div class="card-image ">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/Jy6luiLBsrk" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/profile-sample5.jpg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">Atsui</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com//i1CR3CY2hE4" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src='http://www.radfaces.com/images/avatars/richard-wang.jpg' alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">Sphirou Sapphirou</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/b6VzeoRZiS0" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src='http://www.radfaces.com/images/avatars/jeffrey-douglas.jpg' alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">PlayTheFallen</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Sometimes I dip my nose into my cereals. I do it coz it's funny.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://i.imgsafe.org/a4/a4bda71ae4.jpeg" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="http://www.radfaces.com/images/avatars/scrappy-doo.jpg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">FelixCAT</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/ogYIzsNGu3Y" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="http://www.radfaces.com/images/avatars/scrappy-doo.jpg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">ScoobyDOG</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/KgjcndVr7tU" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="http://www.radfaces.com/images/avatars/scrappy-doo.jpg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                        <p class="title is-4 no-padding">Scrappy Doo</p>
+                                        <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                        <p class="subtitle is-6">Moderator</p>
+                                    </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://i.imgsafe.org/a5/a5e978ce20.jpeg" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="http://www.radfaces.com/images/avatars/alex-mack.jpg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">Prototyp3</p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/Gnxquq4oYQc" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="http://www.radfaces.com/images/avatars/alex-mack.jpg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4 no-padding">Alex Mack</p>
+                                    <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card large">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="https://source.unsplash.com/qbtyUQtqJ8k" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-96x96">
+                                        <img src="http://www.radfaces.com/images/avatars/alex-mack.jpg" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">Alex Mack</p>
+                                    <p class="subtitle is-6">Moderator</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore reprehenderit beatae magnam animi!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Staff -->
         </div>
-      </div>
-    </footer>
-    <!--  ===============
-    HERE BE MODALS
-    ===============  -->
-    <!-- 3dFlipVertical card tiny -->
-    <div id="modal-card" class="modal modal-fx-3dSlit">
-      <div class="modal-background"></div>
-      <div class="modal-content is-tiny">
-        <!-- content -->
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://source.unsplash.com/6Ticnhs1AG0" alt="Placeholder image">
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="http://www.radfaces.com/images/avatars/linda-barret.jpg" alt="linda barret avatar" ">
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">Jane Doe</p>
-                <p class="subtitle is-6">@jane_doe</p>
-              </div>
+    </div>
+
+    <footer class="footer">
+            <div class="container">
+                <div class="content has-text-centered">
+                    <div class="soc">
+                        <a href="#"><i class="fa fa-github-alt fa-2x" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-youtube fa-2x" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a>
+                    </div>
+                    <p>
+                        <strong>Bulma</strong> by <a href="http://jgthms.com">Jeremy Thomas</a>. 
+                        The source code is licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. <br>
+                    </p>
+                </div>
             </div>
-            <div class="content">
-              Laum Ipsum junkah potatoes bookin' it. Moosetown rig up I'm tellin' you way up north bookin' it can't get theyah from heeyah native bean suppah whawf Powrtland Museum of Aht, back woods hawsun around the pit mummah Yessah, mummah muckle riyht on'ta her
-              Bean's dinnahbucket bub geez bud sumpin' fierce ayuhpawt Bangah naw, Powrtland Museum of Aht down cellah sumpin' fierce hoppa bub If you can't stand the wintah you don't deserve the summah slower than molasses going uphill in January.
-              Sgn'wahl shoggor hrii uaaah R'lyeh uh'e k'yarnak Hastur hupadgh li'hee, hai f'nilgh'ri nilgh'ri n'ghftor ngftaghu vulgtlagln h'hrii throd Nyarlathotep lloig, naflsll'ha nnnsll'ha athg y-ebunma goka chtenff ehyeog cehye. Zhro y'hah
-              nogoth phlegeth stell'bsna orr'e ph'Hastur gnaiih throd, uln ya lw'nafh mg nar'luh li'hee wgah'n, sgn'wahl mg nakadishtu chlirgh hupadgh tharanak h'gnaiih.
-              <a>@bulmaio</a>.
-              <a href="#">#css</a>
-              <a href="#">#responsive</a>
-              <br>
-              <time datetime="2018-02-02">12:45 AM - 20 June 2018</time>
-            </div>
-          </div>
-        </div>
-        <!-- end content -->
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-    <!-- end tiny modal card -->
-    <!-- 3dFlipVertical card tiny [butterfly] -->
-    <div id="modal-card2" class="modal modal-fx-3dSlit">
-      <div class="modal-background"></div>
-      <div class="modal-content is-tiny">
-        <!-- content -->
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://source.unsplash.com/hLyd1LukQ7E" alt="butterfly">
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="http://www.radfaces.com/images/avatars/linda-barret.jpg" alt="linda barret avatar">
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">Jane Doe</p>
-                <p class="subtitle is-6">@jane_doe</p>
-              </div>
-            </div>
-            <div class="content">
-              Laum Ipsum junkah potatoes bookin' it. Moosetown rig up I'm tellin' you way up north bookin' it can't get theyah from heeyah native bean suppah whawf Powrtland Museum of Aht, back woods hawsun around the pit mummah Yessah, mummah muckle riyht on'ta her
-              Bean's dinnahbucket bub geez bud sumpin' fierce ayuhpawt Bangah naw, Powrtland Museum of Aht down cellah sumpin' fierce hoppa bub If you can't stand the wintah you don't deserve the summah slower than molasses going uphill in January.
-              Sgn'wahl shoggor hrii uaaah R'lyeh uh'e k'yarnak Hastur hupadgh li'hee, hai f'nilgh'ri nilgh'ri n'ghftor ngftaghu vulgtlagln h'hrii throd Nyarlathotep lloig, naflsll'ha nnnsll'ha athg y-ebunma goka chtenff ehyeog cehye. Zhro y'hah
-              nogoth phlegeth stell'bsna orr'e ph'Hastur gnaiih throd, uln ya lw'nafh mg nar'luh li'hee wgah'n, sgn'wahl mg nakadishtu chlirgh hupadgh tharanak h'gnaiih.
-              <a>@bulmaio</a>.
-              <a href="#">#css</a>
-              <a href="#">#responsive</a>
-              <br>
-              <time datetime="2018-02-02">12:45 AM - 20 May 2018</time>
-            </div>
-          </div>
-        </div>
-        <!-- end content -->
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-    <!-- end tiny modal card -->
-    <!-- Image modal -->
-    <div id="modal-image2" class="modal modal-fx-3dSlit">
-      <div class="modal-background"></div>
-      <div class="modal-content is-huge is-image">
-        <!-- content -->
-        <img src="https://source.unsplash.com/RWnpyGtY1aU" alt="image">
-        <!-- end content -->
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-    <!-- Image modal -->
-    <div id="modal-image4" class="modal modal-fx-3dSlit">
-      <div class="modal-background"></div>
-      <div class="modal-content is-huge is-image">
-        <!-- content -->
-        <img src="https://source.unsplash.com/hLyd1LukQ7E" alt="butterfly">
-        <!-- end content -->
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-    <!-- Image modal-->
-    <div id="modal-image" class="modal modal-fx-superScaled">
-      <div class="modal-background"></div>
-      <div class="modal-content  is-image">
-        <!-- content -->
-        <img src="https://i.imgsafe.org/ba/baa924a5e3.png" alt="Placeholder image">
-        <!--     <img src="https://source.unsplash.com/zFrUz_tNjCY" alt="placeholder">
-        -->    <!-- end content -->
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-  </div>  
+        </footer>
+  </div>
+
+
 </template>
 
 <script>
@@ -357,81 +436,105 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped> 
-.columns:nth-child(2) {
-  margin-top: -10rem;
+body {
+background: #041221;
 }
-html,body {
-  background: #EFF3F4;
-  font-family: 'Open Sans', serif;
+.card.large {
+height: 600px;
+-webkit-backface-visibility: hidden;
+backface-visibility: initial;
+border-radius: 5px;
 }
-.hero-body .container {
-  max-width: 700px;
+.media-content {
+overflow: hidden;
 }
-.hero-body .title {
-  color: hsl(192,17%,99%) !important;
+.title.no-padding {
+margin-bottom: 0 !important;
 }
-.hero-body .subtitle {
-  color: hsl(192,17%,99%) !important;
-  padding-top: 2rem;
-  line-height: 1.5;
+#flow span {
+display: block;
+width: 200vw;
+height: 200vw;
+position: absolute;
+top: -180vw;
+left: -50vw;
+border-radius: 90vw;
+opacity: 0.6;
 }
-.features {
-  padding: 5rem 0;
+.flow-1 {
+background: #3281ff;
+-webkit-animation: rotating 20s linear infinite;
+-moz-animation: rotating 20s linear infinite;
+-ms-animation: rotating 20s linear infinite;
+-o-animation: rotating 20s linear infinite;
+animation: rotating 20s linear infinite;
 }
-.box.cta {
-  border-radius: 0;
-  border-left: none;
-  border-right: none;
+.flow-2 {
+background: #f442ee;
+position: absolute;
+-webkit-animation: rotating 15s linear infinite;
+-moz-animation: rotating 15s linear infinite;
+-ms-animation: rotating 15s linear infinite;
+-o-animation: rotating 15s linear infinite;
+animation: rotating 15s linear infinite;
 }
-.card-image > .fa {
-  font-size: 8rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  color: #209cee;
+.flow-3 {
+background: #42eef4;
+position: absolute;
+-webkit-animation: rotating 7s linear infinite;
+-moz-animation: rotating 7s linear infinite;
+-ms-animation: rotating 7s linear infinite;
+-o-animation: rotating 7s linear infinite;
+animation: rotating 7s linear infinite;
 }
-.card-content .content {
-  font-size: 14px;
-  margin: 1rem 1rem;
+@-webkit-keyframes rotating {
+from {
+-ms-transform: rotate(0deg);
+-moz-transform: rotate(0deg);
+-webkit-transform: rotate(0deg);
+-o-transform: rotate(0deg);
+transform: rotate(0deg);
 }
-.card-content .content h4 {
-  font-size: 16px;
-  font-weight: 700;
+to {
+-ms-transform: rotate(360deg);
+-moz-transform: rotate(360deg);
+-webkit-transform: rotate(360deg);
+-o-transform: rotate(360deg);
+transform: rotate(360deg);
 }
-.card {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
-  margin-bottom: 2rem;
 }
-.intro {
-  padding: 5rem 0;
-  text-align: center;
+@keyframes rotating {
+from {
+-ms-transform: rotate(0deg);
+-moz-transform: rotate(0deg);
+-webkit-transform: rotate(0deg);
+-o-transform: rotate(0deg);
+transform: rotate(0deg);
 }
-.sandbox {
-  padding: 5rem 0;
+to {
+-ms-transform: rotate(360deg);
+-moz-transform: rotate(360deg);
+-webkit-transform: rotate(360deg);
+-o-transform: rotate(360deg);
+transform: rotate(360deg);
 }
-.tile.notification {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
 }
-.is-shady {
-  animation: flyintoright .4s backwards;
-  background: #fff;
-  box-shadow: rgba(0, 0, 0, .1) 0 1px 0;
-  border-radius: 4px;
-  display: inline-block;
-  margin: 10px;
-  position: relative;
-  transition: all .2s ease-in-out;
+.rotating {
+-webkit-animation: rotating 2s linear infinite;
+-moz-animation: rotating 2s linear infinite;
+-ms-animation: rotating 2s linear infinite;
+-o-animation: rotating 2s linear infinite;
+animation: rotating 2s linear infinite;
 }
-.is-shady:hover {
-  box-shadow: 0 10px 16px rgba(0, 0, 0, .13), 0 6px 6px rgba(0, 0, 0, .19);
+.footer{
+background-color: #222831;
+color: lemonchiffon;
 }
-/*adds font awesome stars*/
-footer li:before {
-  content: '\f1b2';
-  font-family: 'FontAwesome';
-  float: left;
-  margin-left: -1.5em;
-  color: #147efb;
-}
+.footer p, strong
+{color: lemonchiffon}
+.footer a:hover
+{color: crimson;}
+.fa
+{color: lemonchiffon;
+    margin: 10px}
 </style>
