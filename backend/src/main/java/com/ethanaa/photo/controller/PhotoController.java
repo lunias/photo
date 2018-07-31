@@ -49,6 +49,14 @@ public class PhotoController {
         return ResponseEntity.ok(photoDataRepository.findAll(pageable));
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllPhotoData() {
+
+        photoService.deleteAllPhotoData();
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
 
@@ -88,13 +96,5 @@ public class PhotoController {
         photoService.runUploadJob(batchId);
 
         return ResponseEntity.ok(batchId.toString());
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllUploads() {
-
-        photoService.deleteAllPhotoData();
-
-        return ResponseEntity.ok().build();
     }
 }

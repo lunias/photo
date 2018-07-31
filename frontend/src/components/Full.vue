@@ -7,7 +7,7 @@
   </button>
   </div>
   <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active content">
-		<p><span class="title">Drop photo(s) to upload</span></p>
+		<p><span class="title">Drop photos to upload</span></p>
     <p class="has-text-centered"><b-icon icon="cloud-upload" size="is-large" /></p>
   </div>
   <div class="upload" v-show="!isOption">
@@ -28,7 +28,7 @@
           <tr v-if="!files.length">
             <td colspan="7">
               <div class="box has-text-centered content">
-                <p><span class="title">Drop photo(s) anywhere to upload</span></p>
+                <p><span class="title">Drop photos anywhere to upload</span></p>
                 <p><b-icon icon="cloud-upload" size="is-large" /></p>
               </div>
             </td>
@@ -104,7 +104,7 @@
         <span type="button" class="button is-info" @click="onAddFolader">
           Select Folder
         </span>
-          <span type="button" class="button is-success" :disabled="!files.length" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
+          <span type="button" class="button is-success" :disabled="!files.length || $refs.upload.uploaded" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
             Start Upload
           </span>
           <span type="button" class="button is-dark" v-else @click.prevent="$refs.upload.active = false">
