@@ -27,7 +27,7 @@ public class PhotoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PhotoService.class);
 
-    private static final String OUTPUT_DIR = "C:/ethan/images/";
+    private static final String OUTPUT_DIR = "/home/lunias/Pictures/photo/";
     private static final String UPLOAD_DIR = OUTPUT_DIR + "uploads/";
     private static final String THUMBS_DIR = OUTPUT_DIR + "thumbs/";
     private static final String SCALED_DIR = OUTPUT_DIR + "scaled/";
@@ -72,7 +72,12 @@ public class PhotoService {
             LOG.error("Cannot transfer file with relative path outside current directory {}", originalName);
         }
 
-        photoFile.transferTo(new File(directory + "/" + originalName));
+        File uploadDirectory = new File(directory + "/" + originalName);
+        if (originalName.contains("/") && !uploadDirectory.getParentFile().exists()) {
+            uploadDirectory.getParentFile().mkdirs();
+        }
+
+        photoFile.transferTo(uploadDirectory);
 
         transferFuture.complete(index);
     }

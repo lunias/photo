@@ -56,7 +56,7 @@ public class PhotoController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(@RequestParam("photos") MultipartFile[] photoFiles)
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile[] photoFiles)
             throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
             JobRestartException, JobInstanceAlreadyCompleteException, IOException, InterruptedException, ExecutionException, TimeoutException {
 

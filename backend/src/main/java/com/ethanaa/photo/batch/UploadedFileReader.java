@@ -8,8 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @StepScope
@@ -19,9 +25,11 @@ public class UploadedFileReader implements ItemReader<File> {
 
     private ConcurrentLinkedDeque<File> uploadedFiles;
 
-    public UploadedFileReader(@Value("#{jobParameters['batchDirectory']}") String batchDirectory) {
+    public UploadedFileReader(@Value("#{jobParameters['batchDirectory']}") String batchDirectory) throws IOException {
 
-        this.uploadedFiles = new ConcurrentLinkedDeque<>(Arrays.asList(new File(batchDirectory).listFiles()));
+        this.uploadedFiles = Stream.of(
+                Files.find(Paths.get(batchDirectory), 999, (p, bfa) -> bfa.isRegularFile()))
+                .flatMap(p -> p.map(Path::toFile)).collect(Collectors.toCollection(ConcurrentLinkedDeque::new));
     }
 
     @Override

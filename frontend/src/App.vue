@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img id="logo" src="./assets/logo.png">
     <button @click="callRestService()" v-if="false">
       CALL Spring Boot REST backend service</button>
     <h3 v-if="false">{{ response }}</h3>
@@ -40,5 +40,9 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#logo {
+    position: relative;
+    z-index: 9000;
 }
 </style>

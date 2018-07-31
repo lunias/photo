@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="root">
   <!-- START NAV -->
   <nav class="navbar">
     <div class="container">
@@ -65,25 +65,9 @@
       <span class="flow-2"></span>
       <span class="flow-3"></span>
     </div>
-    <div class="section">
+    <div id="upload" class="section">
       <div class="box">
-        <ul id="upload-list">
-          <li v-for="photo in photos">{{photo.name}} - Error: {{photo.error}}, Success: {{photo.success}}</li>
-        </ul>
-        <file-upload
-          class="button is-white"
-          ref="upload"
-          v-model="photos"
-          post-action="/photos/upload"
-          @input-file="inputFile"
-          @input-filter="inputFilter"
-          extensions="gif,jpg,jpeg,png,webp"
-          accept="image/png,image/gif,image/jpeg,image/webp"
-          :multiple="true">
-          Select files
-        </file-upload>
-        <button class="button is-white" v-show="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true" type="button">Start upload</button>
-        <button class="button is-white" v-show="$refs.upload && $refs.upload.active" @click.prevent="$refs.upload.active = false" type="button">Stop upload</button>  
+        <full></full>
       </div>
     </div>
     <div class="section">
@@ -432,8 +416,8 @@
                         <a href="#"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a>
                     </div>
                     <p>
-                        <strong>Bulma</strong> by <a href="http://jgthms.com">Jeremy Thomas</a>. 
-                        The source code is licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. <br>
+                        <strong>agvart.com</strong> 
+                        <br>
                     </p>
                 </div>
             </div>
@@ -444,9 +428,10 @@
 <script>
 import modalFX from '../../node_modules/bulma-modal-fx/dist/js/modal-fx.min.js'
 import FileUpload from 'vue-upload-component'
+import Full from './Full.vue'
 export default {
     name: 'HelloWorld',
-    components: { FileUpload },
+    components: { FileUpload, Full },
     data () {
         return {
             photos: []
@@ -545,7 +530,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped> 
-body {
+#root {
 background: #041221;
 }
 .card.large {
@@ -645,7 +630,10 @@ color: lemonchiffon;
 {color: crimson;}
 .fa
 {color: lemonchiffon;
-margin: 10px}
+ margin: 10px}
+#upload {
+    position: relative
+}
 #upload-list li {
 color: black;
 }
