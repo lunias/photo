@@ -1,10 +1,8 @@
 <template>
 <div class="example-full">
-  <button type="button" class="button float-right btn-is-option" @click.prevent="isOption = !isOption">
-    <i class="fa fa-cog" aria-hidden="true"></i>
+  <button type="button" class="button is-warning" @click.prevent="isOption = !isOption">
     Options
   </button>
-
   <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
 		<h3>Drop files to upload</h3>
   </div>
@@ -14,7 +12,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Thumb</th>
+            <th>Preview</th>
             <th>Name</th>
             <th>Size</th>
             <th>Speed</th>
@@ -25,7 +23,7 @@
         <tbody>
           <tr v-if="!files.length">
             <td colspan="7">
-              <div class="text-center p-5">
+              <div class="has-text-centered">
                 <h4>Drop files anywhere to upload<br/>or</h4>
                 <label :for="name" class="button">Select Files</label>
               </div>
@@ -42,7 +40,11 @@
                 {{file.name}}
               </div>
               <div class="progress" v-if="file.active || file.progress !== '0.00'">
-                <div :class="{'progress-bar': true, 'progress-bar-striped': true, 'bg-danger': file.error, 'progress-bar-animated': file.active}" role="progressbar" :style="{width: file.progress + '%'}">{{file.progress}}%</div>
+                <progress
+                  :class="{'progress': true, 'is-primary': true, 'is-danger': file.error, 'progress-bar-animated': file.active}"
+                  role="progressbar" :value="file.progress" max="100">
+                  {{file.progress}}%
+                </progress>
               </div>
             </td>
             <td>{{file.size | formatSize}}</td>
@@ -75,15 +77,15 @@
       </table>
     </div>
     <div class="example-foorer">
-      <div class="footer-status float-right">
-        Drop: {{$refs.upload ? $refs.upload.drop : false}},
-        Active: {{$refs.upload ? $refs.upload.active : false}},
-        Uploaded: {{$refs.upload ? $refs.upload.uploaded : true}},
-        Drop active: {{$refs.upload ? $refs.upload.dropActive : false}}
+      <div class="notification is-warning">
+        Drop: <b>{{$refs.upload ? $refs.upload.drop : false}}</b>,
+        Active: <b>{{$refs.upload ? $refs.upload.active : false}}</b>,
+        Uploaded: <b>{{$refs.upload ? $refs.upload.uploaded : true}}</b>,
+        Drop active: <b>{{$refs.upload ? $refs.upload.dropActive : false}}</b>
       </div>
-      <div class="btn-group">
+      <div class="buttons has-addons is-centered">
         <file-upload
-          class="button dropdown-toggle"
+          class="button is-primary"
           :post-action="postAction"
           :put-action="putAction"
           :extensions="extensions"
@@ -101,31 +103,27 @@
           @input-filter="inputFilter"
           @input-file="inputFile"
           ref="upload">
-          <i class="fa fa-plus"></i>
           Select
         </file-upload>
-        <div class="dropdown-menu">
-          <label class="dropdown-item" :for="name">Add files</label>
-          <a class="dropdown-item" href="#" @click="onAddFolader">Add folder</a>
-          <a class="dropdown-item" href="#" @click.prevent="addData.show = true">Add data</a>
+        <span type="button" class="button is-dark" @click="onAddFolader">
+          Select Folder
+        </span>
+          <span type="button" class="button is-success" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
+            Start Upload
+          </span>
+          <span type="button" class="button is-dark" v-else @click.prevent="$refs.upload.active = false">
+            Stop Upload
+          </span>
+          <div class="dropdown-menu">
+            <label class="dropdown-item" :for="name">Add files</label>
+            <a class="dropdown-item" href="#" @click="onAddFolader">Add folder</a>
+            <a class="dropdown-item" href="#" @click.prevent="addData.show = true">Add data</a>
         </div>
       </div>
-      <button type="button" class="button" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-        Start Upload
-      </button>
-      <button type="button" class="button"  v-else @click.prevent="$refs.upload.active = false">
-        <i class="fa fa-stop" aria-hidden="true"></i>
-        Stop Upload
-      </button>
     </div>
   </div>
 
-
-
-
-
-  <div class="option" v-show="isOption">
+  <div class="box" v-show="isOption">
     <div class="form-group">
       <label for="accept">Accept:</label>
       <input type="text" id="accept" class="form-control" v-model="accept">
