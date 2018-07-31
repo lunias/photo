@@ -19,19 +19,13 @@
             Home
           </a>
           <a class="navbar-item">
-            Examples
-          </a>
-          <a class="navbar-item">
             Features
           </a>
           <a class="navbar-item">
-            Team
+            Portfolio
           </a>
           <a class="navbar-item">
-            Archives
-          </a>
-          <a class="navbar-item">
-            Help
+            Contact
           </a>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
@@ -39,10 +33,10 @@
             </a>
             <div class="navbar-dropdown">
               <a class="navbar-item">
-                Dashboard
+                Profile
               </a>
               <a class="navbar-item">
-                Profile
+                My Photos
               </a>
               <a class="navbar-item">
                 Settings
@@ -410,10 +404,10 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <div class="soc">
-                        <a href="#"><i class="fa fa-github-alt fa-2x" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-youtube fa-2x" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a>
+                        <a href="#"><b-icon icon="youtube"/></a>
+                        <a href="#"><b-icon icon="facebook"/></a>
+                        <a href="#"><b-icon icon="twitter"/></a>
+                        <a href="#"><b-icon icon="instagram"/></a>
                     </div>
                     <p>
                         <strong>agvart.com</strong> 
