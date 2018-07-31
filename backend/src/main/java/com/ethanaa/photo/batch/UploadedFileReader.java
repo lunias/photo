@@ -27,9 +27,10 @@ public class UploadedFileReader implements ItemReader<File> {
 
     public UploadedFileReader(@Value("#{jobParameters['batchDirectory']}") String batchDirectory) throws IOException {
 
-        this.uploadedFiles = Stream.of(
-                Files.find(Paths.get(batchDirectory), 999, (p, bfa) -> bfa.isRegularFile()))
-                .flatMap(p -> p.map(Path::toFile)).collect(Collectors.toCollection(ConcurrentLinkedDeque::new));
+        this.uploadedFiles = Files.find(
+                Paths.get(batchDirectory), 999, (p, bfa) -> bfa.isRegularFile())
+                .map(Path::toFile)
+                .collect(Collectors.toCollection(ConcurrentLinkedDeque::new));
     }
 
     @Override
