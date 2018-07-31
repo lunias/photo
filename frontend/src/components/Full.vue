@@ -1,14 +1,18 @@
 <template>
 <div class="example-full">
+  <div class="has-text-right">
   <button type="button" class="button is-warning" @click.prevent="isOption = !isOption">
-    Options
+    <span>Options</span>
+    <b-icon icon="settings" size="is-small" />
   </button>
-  <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
-		<h3>Drop files to upload</h3>
+  </div>
+  <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active content">
+		<p><span class="title">Drop photo(s) to upload</span></p>
+    <p class="has-text-centered"><b-icon icon="cloud-upload" size="is-large" /></p>
   </div>
   <div class="upload" v-show="!isOption">
     <div>
-      <table class="table is-hoverable is-fullwidth">
+      <table class="table is-hoverable is-fullwidth is-striped">
         <thead>
           <tr>
             <th>#</th>
@@ -23,9 +27,9 @@
         <tbody>
           <tr v-if="!files.length">
             <td colspan="7">
-              <div class="has-text-centered">
-                <h4>Drop files anywhere to upload<br/>or</h4>
-                <label :for="name" class="button">Select Files</label>
+              <div class="box has-text-centered content">
+                <p><span class="title">Drop photo(s) anywhere to upload</span></p>
+                <p><b-icon icon="cloud-upload" size="is-large" /></p>
               </div>
             </td>
           </tr>
@@ -41,61 +45,53 @@
               </div>
               <div class="progress" v-if="file.active || file.progress !== '0.00'">
                 <progress
-                  :class="{'progress': true, 'is-primary': true, 'is-danger': file.error, 'progress-bar-animated': file.active}"
+                  :class="{'progress': true, 'is-primary': true, 'is-success': file.success, 'is-danger': file.error, 'progress-bar-animated': file.active}"
                   role="progressbar" :value="file.progress" max="100">
                   {{file.progress}}%
                 </progress>
               </div>
             </td>
             <td>{{file.size | formatSize}}</td>
-            <td>{{file.speed | formatSize}}</td>
-
-            <td v-if="file.error">{{file.error}}</td>
+            <td>{{file.speed | formatSize}}/s</td>
+            <td v-if="file.error" v-html="file.error"></td>
             <td v-else-if="file.success">success</td>
             <td v-else-if="file.active">active</td>
             <td v-else></td>
             <td>
-              <div class="btn-group">
-                <button class="button" type="button">
-                  Action
-                </button>
-                <div class="dropdown-menu">
-                  <a :class="{'dropdown-item': true, disabled: file.active || file.success || file.error === 'compressing'}" href="#" @click.prevent="file.active || file.success || file.error === 'compressing' ? false :  onEditFileShow(file)">Edit</a>
-                  <a :class="{'dropdown-item': true, disabled: !file.active}" href="#" @click.prevent="file.active ? $refs.upload.update(file, {error: 'cancel'}) : false">Cancel</a>
-
-                  <a class="dropdown-item" href="#" v-if="file.active" @click.prevent="$refs.upload.update(file, {active: false})">Abort</a>
-                  <a class="dropdown-item" href="#" v-else-if="file.error && file.error !== 'compressing' && $refs.upload.features.html5" @click.prevent="$refs.upload.update(file, {active: true, error: '', progress: '0.00'})">Retry upload</a>
-                  <a :class="{'dropdown-item': true, disabled: file.success || file.error === 'compressing'}" href="#" v-else @click.prevent="file.success || file.error === 'compressing' ? false : $refs.upload.update(file, {active: true})">Upload</a>
-
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" @click.prevent="$refs.upload.remove(file)">Remove</a>
-                </div>
-              </div>
+              <b-dropdown hoverable>
+                  <button class="button is-light" slot="trigger">
+                    <span>Action</span>
+                    <b-icon icon="menu-down" size="is-small" />
+                  </button>
+                  <b-dropdown-item :class="{'dropdown-item': true, disabled: file.active || file.success || file.error === 'compressing'}" @click="file.active || file.success || file.error === 'compressing' ? false : onEditFileShow(file)">Edit</b-dropdown-item>
+                  <b-dropdown-item :class="{'dropdown-item': true, disabled: !file.active}" @click="file.active ? $refs.upload.update(file, {error: 'cancel'}) : false">Cancel</b-dropdown-item>
+                  <b-dropdown-item v-if="file.active" @click="$refs.upload.update(file, {active: false})">Abort</b-dropdown-item>
+                  <b-dropdown-item v-else-if="file.error && file.error !== 'compressing' && $refs.upload.features.html5" @click="$refs.upload.update(file, {active: true, error: '', progress: '0.00'})">Retry</b-dropdown-item>
+                  <b-dropdown-item :class="{'dropdown-item': true, disabled: file.success || file.error === 'compressing'}" href="#" v-else @click="file.success || file.error === 'compressing' ? false : $refs.upload.update(file, {active: true})">Upload</b-dropdown-item>
+                  <b-dropdown-item @click="$refs.upload.remove(file)">Remove</b-dropdown-item>
+              </b-dropdown>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="example-foorer">
-      <div class="notification is-warning">
+    <div>
+      <div id="config-status" class="notification is-warning">
         Drop: <b>{{$refs.upload ? $refs.upload.drop : false}}</b>,
         Active: <b>{{$refs.upload ? $refs.upload.active : false}}</b>,
         Uploaded: <b>{{$refs.upload ? $refs.upload.uploaded : true}}</b>,
         Drop active: <b>{{$refs.upload ? $refs.upload.dropActive : false}}</b>
       </div>
-      <div class="buttons has-addons is-centered">
+      <div id="button-box" class="buttons has-addons is-centered">
         <file-upload
           class="button is-primary"
           :post-action="postAction"
-          :put-action="putAction"
           :extensions="extensions"
           :accept="accept"
           :multiple="multiple"
           :directory="directory"
           :size="size || 0"
           :thread="thread < 1 ? 1 : (thread > 5 ? 5 : thread)"
-          :headers="headers"
-          :data="data"
           :drop="drop"
           :drop-directory="dropDirectory"
           :add-index="addIndex"
@@ -103,22 +99,17 @@
           @input-filter="inputFilter"
           @input-file="inputFile"
           ref="upload">
-          Select
+          Select File(s)
         </file-upload>
-        <span type="button" class="button is-dark" @click="onAddFolader">
+        <span type="button" class="button is-info" @click="onAddFolader">
           Select Folder
         </span>
-          <span type="button" class="button is-success" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
+          <span type="button" class="button is-success" :disabled="!files.length" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
             Start Upload
           </span>
           <span type="button" class="button is-dark" v-else @click.prevent="$refs.upload.active = false">
             Stop Upload
           </span>
-          <div class="dropdown-menu">
-            <label class="dropdown-item" :for="name">Add files</label>
-            <a class="dropdown-item" href="#" @click="onAddFolader">Add folder</a>
-            <a class="dropdown-item" href="#" @click.prevent="addData.show = true">Add data</a>
-        </div>
       </div>
     </div>
   </div>
@@ -133,20 +124,6 @@
       <label for="extensions">Extensions:</label>
       <input type="text" id="extensions" class="form-control" v-model="extensions">
       <small class="form-text text-muted">Allow upload file extension</small>
-    </div>
-    <div class="form-group">
-      <label>PUT Upload:</label>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input class="form-check-input" type="radio" name="put-action" id="put-action" value="" v-model="putAction"> Off
-        </label>
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input class="form-check-input" type="radio" name="put-action" id="put-action" value="/upload/put" v-model="putAction"> On
-        </label>
-      </div>
-      <small class="form-text text-muted">After the shutdown, use the POST method to upload</small>
     </div>
     <div class="form-group">
       <label for="thread">Thread:</label>
@@ -202,13 +179,9 @@
       <small class="form-text text-muted">Automatically activate upload</small>
     </div>
     <div class="form-group">
-      <button type="button" class="button btn-primary btn-lg btn-block" @click.prevent="isOption = !isOption">Confirm</button>
+      <button type="button" class="button is-primary  is-fullwidth" @click.prevent="isOption = !isOption">Confirm</button>
     </div>
   </div>
-
-
-
-
 
   <div :class="{'modal-backdrop': true, 'fade': true, show: addData.show}"></div>
   <div :class="{modal: true, fade: true, show: addData.show}" id="modal-add-data" tabindex="-1" role="dialog">
@@ -292,77 +265,39 @@
 </div>
 </template>
 <style>
-.example-full .btn-group .dropdown-menu {
-  display: block;
-  visibility: hidden;
-  transition: all .2s
-}
-.example-full .btn-group:hover > .dropdown-menu {
-  visibility: visible;
-}
-
-.example-full label.dropdown-item {
-  margin-bottom: 0;
-}
-
-.example-full .btn-group .dropdown-toggle {
-  margin-right: .6rem
-}
-
-.example-full .filename {
-  margin-bottom: .3rem
-}
-
-.example-full .btn-is-option {
-  margin-top: 0.25rem;
-}
-.example-full .example-foorer {
-  padding: .5rem 0;
-  border-top: 1px solid #e9ecef;
-  border-bottom: 1px solid #e9ecef;
-}
-
-
-.example-full .edit-image img {
-  max-width: 100%;
-}
-
-.example-full .edit-image-tool {
-  margin-top: .6rem;
-}
-
-.example-full .edit-image-tool .btn-group{
-  margin-right: .6rem;
-}
-
-.example-full .footer-status {
-  padding-top: .4rem;
-}
-
 .example-full .drop-active {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  position: fixed;
-  z-index: 9999;
-  opacity: .6;
-  text-align: center;
-  background: #000;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    position: fixed;
+    z-index: 9999;
+    opacity: .6;
+    text-align: center;
+    background: #000;
 }
 
-.example-full .drop-active h3 {
-  margin: -.5em 0 0;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  font-size: 40px;
-  color: #fff;
-  padding: 0;
+.example-full .drop-active span {
+    margin: -.5em 0 0;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #fff;
+    padding: 0;
+}
+
+#config-status {
+    margin: .5em;
+    padding: 10px;
+}
+
+#button-box {
+    margin-top: 1em;
 }
 </style>
 
@@ -371,118 +306,109 @@ import Cropper from 'cropperjs'
 import ImageCompressor from '@xkeshi/image-compressor'
 import FileUpload from 'vue-upload-component'
 export default {
-  components: {
-    FileUpload,
-  },
-
-  data() {
-    return {
-      files: [],
-      accept: 'image/png,image/gif,image/jpeg,image/webp',
-      extensions: 'gif,jpg,jpeg,png,webp',
-      // extensions: ['gif', 'jpg', 'jpeg','png', 'webp'],
-      // extensions: /\.(gif|jpe?g|png|webp)$/i,
-      minSize: 1024,
-      size: 1024 * 1024 * 10,
-      multiple: true,
-      directory: false,
-      drop: true,
-      dropDirectory: true,
-      addIndex: false,
-      thread: 3,
-      name: 'file',
-      postAction: '/api/photos/upload',
-      /*
-      putAction: ,
-      headers: {
-        'X-Csrf-Token': 'xxxx',
-      },
-      data: {
-        '_csrf_token': 'xxxxxx',
-      },
-      */
-      autoCompress: 1024 * 1024,
-      uploadAuto: false,
-      isOption: false,
-
-      addData: {
-        show: false,
-        name: '',
-        type: '',
-        content: '',
-      },
-
-
-      editFile: {
-        show: false,
-        name: '',
-      }
-    }
-  },
-
-  watch: {
-    'editFile.show'(newValue, oldValue) {
-      // 关闭了 自动删除 error
-      if (!newValue && oldValue) {
-        this.$refs.upload.update(this.editFile.id, { error: this.editFile.error || '' })
-      }
-
-      if (newValue) {
-        this.$nextTick(function () {
-          if (!this.$refs.editImage) {
-            return
-          }
-          let cropper = new Cropper(this.$refs.editImage, {
-            autoCrop: false,
-          })
-          this.editFile = {
-            ...this.editFile,
-            cropper
-          }
-        })
-      }
+    components: {
+        FileUpload
     },
-
-    'addData.show'(show) {
-      if (show) {
-        this.addData.name = ''
-        this.addData.type = ''
-        this.addData.content = ''
-      }
+    
+    data() {
+        return {
+            files: [],
+            accept: 'image/png,image/gif,image/jpeg,image/webp',
+            extensions: 'gif,jpg,jpeg,png,webp',
+            // extensions: ['gif', 'jpg', 'jpeg','png', 'webp'],
+            // extensions: /\.(gif|jpe?g|png|webp)$/i,
+            minSize: 1024,
+            size: 1024 * 1024 * 10,
+            multiple: true,
+            directory: false,
+            drop: true,
+            dropDirectory: true,
+            addIndex: false,
+            thread: 3,
+            name: 'file',
+            postAction: '/api/photos/upload',
+            autoCompress: 1024 * 1024,
+            uploadAuto: false,
+            isOption: false,
+            
+            addData: {
+                show: false,
+                name: '',
+                type: '',
+                content: '',
+            },
+            
+            
+            editFile: {
+                show: false,
+                name: '',
+            }
+        }
     },
-  },
-
-  methods: {
-    inputFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        // Before adding a file
-        // 添加文件前
-
-        // Filter system files or hide files
-        // 过滤系统文件 和隐藏文件
-        if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
-          return prevent()
-        }
-
-        // Filter php html js file
-        // 过滤 php html js 文件
-        if (/\.(php5?|html?|jsx?)$/i.test(newFile.name)) {
-          return prevent()
-        }
-
-        // Automatic compression
-        // 自动压缩
-        if (newFile.file && newFile.type.substr(0, 6) === 'image/' && this.autoCompress > 0 && this.autoCompress < newFile.size) {
-          newFile.error = 'compressing'
-          const imageCompressor = new ImageCompressor(null, {
-            convertSize: Infinity,
-            maxWidth: 512,
-            maxHeight: 512,
-          })
-          imageCompressor.compress(newFile.file)
-            .then((file) => {
-              this.$refs.upload.update(newFile, { error: '', file, size: file.size, type: file.type })
-            })
+    
+    watch: {
+        'editFile.show'(newValue, oldValue) {
+            // 关闭了 自动删除 error
+            if (!newValue && oldValue) {
+                this.$refs.upload.update(this.editFile.id, { error: this.editFile.error || '' })
+            }
+            
+            if (newValue) {
+                this.$nextTick(function () {
+                    if (!this.$refs.editImage) {
+                        return
+                    }
+                    let cropper = new Cropper(this.$refs.editImage, {
+                        autoCrop: false,
+                    })
+                    this.editFile = {
+                        ...this.editFile,
+                        cropper
+                    }
+                })
+            }
+        },
+        
+        'addData.show'(show) {
+            if (show) {
+                this.addData.name = ''
+                this.addData.type = ''
+                this.addData.content = ''
+            }
+        },
+    },
+    
+    methods: {
+        inputFilter(newFile, oldFile, prevent) {
+            if (newFile && !oldFile) {
+                // Before adding a file
+                // 添加文件前
+                
+                // Filter system files or hide files
+                // 过滤系统文件 和隐藏文件
+                if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
+                    return prevent()
+                }
+                
+                // Filter php html js file
+                // 过滤 php html js 文件
+                if (/\.(php5?|html?|jsx?)$/i.test(newFile.name)) {
+                    return prevent()
+                }
+                
+                // Automatic compression
+                // 自动压缩
+                if (newFile.file && newFile.type.substr(0, 6) === 'image/' && this.autoCompress > 0 && this.autoCompress < newFile.size) {
+                    newFile.error = 'compressing &hellip;'
+                    const imageCompressor = new ImageCompressor(null, {
+                        convertSize: Infinity,
+                        maxWidth: 512,
+                        maxHeight: 512,
+                    })
+                    imageCompressor.compress(newFile.file)
+                        .then((file) => {
+                            this.$refs.upload.update(newFile, { error: '', file, size: file.size, type: file.type })
+                        })
             .catch((err) => {
               this.$refs.upload.update(newFile, { error: err.message || 'compress' })
             })
@@ -506,8 +432,6 @@ export default {
         if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
           newFile.thumb = newFile.blob
         }
-
-        //newFile.data = {'photoFiles': newFile.file}
       }
     },
 

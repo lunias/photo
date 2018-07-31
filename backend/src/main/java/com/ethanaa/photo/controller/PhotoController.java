@@ -89,4 +89,12 @@ public class PhotoController {
 
         return ResponseEntity.ok(batchId.toString());
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllUploads() {
+
+        photoService.deleteAllPhotoData();
+
+        return ResponseEntity.ok().build();
+    }
 }
