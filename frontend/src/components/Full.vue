@@ -11,8 +11,8 @@
     <p class="has-text-centered"><b-icon icon="cloud-upload" size="is-large" /></p>
   </div>
   <div class="upload" v-show="!isOption">
-    <div>
-      <table class="table is-hoverable is-fullwidth is-striped">
+    <div class="table-container">
+      <table class="table is-narrow is-hoverable is-fullwidth is-striped">
         <thead>
           <tr>
             <th>#</th>
@@ -27,7 +27,7 @@
         <tbody>
           <tr v-if="!files.length">
             <td colspan="7">
-              <div class="box has-text-centered content">
+              <div class="box has-text-centered content dropbox">
                 <p><span class="title">Drop photos anywhere to upload</span></p>
                 <p><b-icon icon="cloud-upload" size="is-large" /></p>
               </div>
@@ -76,12 +76,6 @@
       </table>
     </div>
     <div>
-      <div id="config-status" class="notification is-warning">
-        Drop: <b>{{$refs.upload ? $refs.upload.drop : false}}</b>,
-        Active: <b>{{$refs.upload ? $refs.upload.active : false}}</b>,
-        Uploaded: <b>{{$refs.upload ? $refs.upload.uploaded : true}}</b>,
-        Drop active: <b>{{$refs.upload ? $refs.upload.dropActive : false}}</b>
-      </div>
       <div id="button-box" class="buttons has-addons is-centered">
         <file-upload
           class="button is-primary"
@@ -112,6 +106,12 @@
           </span>
       </div>
     </div>
+      <div id="config-status" class="notification is-warning">
+        Drop: <b>{{$refs.upload ? $refs.upload.drop : false}}</b>,
+        Active: <b>{{$refs.upload ? $refs.upload.active : false}}</b>,
+        Uploaded: <b>{{$refs.upload ? $refs.upload.uploaded : true}}</b>,
+        Drop active: <b>{{$refs.upload ? $refs.upload.dropActive : false}}</b>
+      </div>
   </div>
 
   <div class="box" v-show="isOption">
@@ -297,7 +297,19 @@
 }
 
 #button-box {
-    margin-top: 1em;
+    margin-top: -1em;
+    margin-bottom: 1em;
+}
+.table-container {
+    overflow-x: visible;
+    overflow-y: auto;
+    height: 350px;
+}
+.dropbox {
+    height: 300px;
+}
+.dropdown-menu {
+    min-width: 6em;
 }
 </style>
 
