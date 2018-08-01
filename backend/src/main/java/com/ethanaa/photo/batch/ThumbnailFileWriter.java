@@ -24,7 +24,7 @@ public class ThumbnailFileWriter implements ItemWriter<PhotoData> {
     private PhotoDataRepository photoDataRepository;
 
     @Autowired
-    public ThumbnailFileWriter(@Value("#{jobParameters['thumbnailDirectory']}") String thumbnailDirectory,
+    public ThumbnailFileWriter(@Value("#{jobParameters['thumbDir']}") String thumbnailDirectory,
                                PhotoDataRepository photoDataRepository) {
 
         this.thumbnailDirectory = thumbnailDirectory;

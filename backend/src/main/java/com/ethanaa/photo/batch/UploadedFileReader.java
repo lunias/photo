@@ -25,10 +25,10 @@ public class UploadedFileReader implements ItemReader<File> {
 
     private ConcurrentLinkedDeque<File> uploadedFiles;
 
-    public UploadedFileReader(@Value("#{jobParameters['batchDirectory']}") String batchDirectory) throws IOException {
+    public UploadedFileReader(@Value("#{jobParameters['rawDir']}") String rawDirectory) throws IOException {
 
         this.uploadedFiles = Files.find(
-                Paths.get(batchDirectory), 999, (p, bfa) -> bfa.isRegularFile())
+                Paths.get(rawDirectory), 999, (p, bfa) -> bfa.isRegularFile())
                 .map(Path::toFile)
                 .collect(Collectors.toCollection(ConcurrentLinkedDeque::new));
     }

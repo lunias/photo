@@ -1,5 +1,7 @@
 package com.ethanaa.photo.service;
 
+import com.ethanaa.photo.config.PhotoProperties;
+import com.ethanaa.photo.model.PhotoData;
 import com.ethanaa.photo.repository.PhotoDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,22 +25,22 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.ethanaa.photo.model.PhotoData.Type.RAW;
 
 @Service
 public class PhotoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PhotoService.class);
 
-    private static final String OUTPUT_DIR = "/home/lunias/Pictures/photo/";
-    private static final String UPLOAD_DIR = OUTPUT_DIR + "uploads/";
-    private static final String THUMBS_DIR = OUTPUT_DIR + "thumbs/";
-    private static final String SCALED_DIR = OUTPUT_DIR + "scaled/";
-
-    private ConcurrentHashMap<String, CompletableFuture<ResponseEntity<?>>> uploadJobs;
+    private final String outputDir;
 
     private JobLauncher jobLauncher;
     private Job uploadJob;
@@ -47,21 +50,36 @@ public class PhotoService {
     @Autowired
     public PhotoService(JobLauncher jobLauncher,
                         Job uploadJob,
-                        PhotoDataRepository photoDataRepository) {
-
-        this.uploadJobs = new ConcurrentHashMap<>();
+                        PhotoDataRepository photoDataRepository,
+                        PhotoProperties photoProperties) {
 
         this.jobLauncher = jobLauncher;
         this.uploadJob = uploadJob;
 
         this.photoDataRepository = photoDataRepository;
+
+        this.outputDir = photoProperties.getOutputDir();
     }
 
-    public File createUploadDirectory(UUID batchId) {
+    private String getDirectory(String username, String batchId, PhotoData.Type type, String uploadId) {
 
-        String uploadDirectoryPath = UPLOAD_DIR + batchId + "/";
+        String today = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
 
-        File uploadDirectory = new File(uploadDirectoryPath);
+        return outputDir + username +
+                "/" + today +
+                "/" + batchId +
+                "/" + type +
+                "/" + (!StringUtils.isEmpty(uploadId) ? uploadId + "/" : "");
+    }
+
+    private String getDirectory(String username, String batchId, PhotoData.Type type) {
+
+        return getDirectory(username, batchId, type, null);
+    }
+
+    public File createUploadDirectory(Authentication authentication, String batchId, String uploadId) {
+
+        File uploadDirectory = new File(getDirectory(authentication.getName(), batchId, PhotoData.Type.RAW, uploadId));
         if (!uploadDirectory.exists()) {
             uploadDirectory.mkdirs();
         }
@@ -74,39 +92,17 @@ public class PhotoService {
         LOG.info("Deleting all uploaded photos");
 
         try {
-            deleteThumbsDirectory();
+            deleteOutputDirectory();
         } catch (IOException ioe) {
-            LOG.warn("Failed to delete thumbs directory", ioe);
-        }
-
-        try {
-            deleteScaledDirectory();
-        } catch (IOException ioe) {
-            LOG.warn("Failed to delete scaled directory", ioe);
-        }
-
-        try {
-            deleteUploadDirectory();
-        } catch (IOException ioe) {
-            LOG.warn("Failed to delete upload directory", ioe);
+            LOG.warn("Failed to delete output directory", ioe);
         }
 
         photoDataRepository.deleteAll();
     }
 
-    public void deleteUploadDirectory() throws IOException {
+    public void deleteOutputDirectory() throws IOException {
 
-        deleteDirectory(UPLOAD_DIR);
-    }
-
-    public void deleteThumbsDirectory() throws IOException {
-
-        deleteDirectory(THUMBS_DIR);
-    }
-
-    public void deleteScaledDirectory() throws IOException {
-
-        deleteDirectory(SCALED_DIR);
+        deleteDirectory(outputDir);
     }
 
     private void deleteDirectory(String directory) throws IOException {
@@ -132,6 +128,7 @@ public class PhotoService {
         if (photoFile.isEmpty()) {
             LOG.error("Cannot transfer empty file {}", originalName);
         }
+
         if (originalName.contains("..")) {
             LOG.error("Cannot transfer file with relative path outside current directory {}", originalName);
         }
@@ -146,42 +143,18 @@ public class PhotoService {
         transferFuture.complete(index);
     }
 
-    public CompletableFuture<ResponseEntity<?>> runUploadJob(UUID batchId)
+    public void runUploadJob(Authentication authentication, String batchId, String uploadId)
             throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
             JobRestartException, JobInstanceAlreadyCompleteException {
 
-        CompletableFuture<ResponseEntity<?>> completableFuture =
-                uploadJobs.computeIfAbsent(batchId.toString(), (k) -> new CompletableFuture<>());
-
         jobLauncher.run(uploadJob, new JobParameters(new HashMap<String, JobParameter>() {
             {
-                put("batchId", new JobParameter(batchId.toString(), true));
-                put("batchDirectory", new JobParameter(UPLOAD_DIR + batchId, false));
-                put("thumbnailDirectory", new JobParameter(THUMBS_DIR + batchId, false));
-                put("scaledDirectory", new JobParameter(SCALED_DIR + batchId, false));
+                put("uploadId", new JobParameter(UUID.randomUUID().toString(), true));
+                put("batchId", new JobParameter(batchId, false));
+                put("rawDir", new JobParameter(getDirectory(authentication.getName(), batchId, RAW, uploadId), false));
+                put("thumbDir", new JobParameter(getDirectory(authentication.getName(), batchId, PhotoData.Type.THUMBNAIL), false));
+                put("scaledDir", new JobParameter(getDirectory(authentication.getName(), batchId, PhotoData.Type.SCALED), false));
             }
         }));
-
-        return completableFuture;
-    }
-
-    public void finalizeUpload(String batchId, JobExecution jobExecution) {
-
-        CompletableFuture<ResponseEntity<?>> uploadFuture = uploadJobs.get(batchId);
-        if (uploadFuture == null) {
-            return;
-        }
-
-        ResponseEntity<Void> responseEntity = ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-        if (BatchStatus.COMPLETED.equals(jobExecution.getStatus())) {
-            responseEntity = ResponseEntity.ok().build();
-        } else {
-            LOG.error("JobExecution not COMPLETED; {}", jobExecution.getStatus());
-        }
-
-        uploadFuture.complete(responseEntity);
-        uploadJobs.remove(batchId);
-
-        LOG.info("Upload finalized: {}", jobExecution.getStatus());
     }
 }

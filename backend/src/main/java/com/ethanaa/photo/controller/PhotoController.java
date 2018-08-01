@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -64,15 +67,17 @@ public class PhotoController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile[] photoFiles)
+    public ResponseEntity<String> upload(Authentication authentication,
+                                         @RequestParam("batchId") String batchId,
+                                         @RequestParam("file") MultipartFile[] photoFiles)
             throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
             JobRestartException, JobInstanceAlreadyCompleteException, IOException, InterruptedException, ExecutionException, TimeoutException {
 
-        UUID batchId = UUID.randomUUID();
+        String uploadId = UUID.randomUUID().toString();
 
         LOG.info("Creating upload directory");
 
-        File uploadDirectory = photoService.createUploadDirectory(batchId);
+        File uploadDirectory = photoService.createUploadDirectory(authentication, batchId, uploadId);
 
         LOG.info("Transferring {} file(s)...", photoFiles.length);
 
@@ -93,8 +98,8 @@ public class PhotoController {
             LOG.info("Transferred {} / {}", index, photoFiles.length);
         }
 
-        photoService.runUploadJob(batchId);
+        photoService.runUploadJob(authentication, batchId, uploadId);
 
-        return ResponseEntity.ok(batchId.toString());
+        return ResponseEntity.ok(batchId);
     }
 }

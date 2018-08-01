@@ -22,7 +22,7 @@ public class PhotoData implements Serializable {
     public static final String SCALED_SUFFIX = "scaled";
 
     public enum Type {
-        THUMBNAIL, SCALED
+        RAW, THUMBNAIL, SCALED
     }
 
     @Id

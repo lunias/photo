@@ -24,7 +24,7 @@ public class ScaledFileWriter implements ItemWriter<PhotoData> {
     private PhotoDataRepository photoDataRepository;
 
     @Autowired
-    public ScaledFileWriter(@Value("#{jobParameters['scaledDirectory']}") String scaledDirectory,
+    public ScaledFileWriter(@Value("#{jobParameters['scaledDir']}") String scaledDirectory,
                             PhotoDataRepository photoDataRepository) {
 
         this.scaledDirectory = scaledDirectory;

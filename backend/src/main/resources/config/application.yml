@@ -1,3 +1,6 @@
+photo:
+  output-dir: "/home/lunias/Pictures/photo/"
+
 management:
   endpoints:
     web:

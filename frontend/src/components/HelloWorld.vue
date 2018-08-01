@@ -66,6 +66,11 @@
     </div>
     <div class="section">
       <div class="box">
+        <img :src="'file:///' + photo.derivedPath" v-for="photo in photos">
+      </div>
+    </div>
+    <div class="section">
+      <div class="box">
         <div class="field has-addons">
           <div class="control is-expanded">
             <input class="input has-text-centered" type="search" placeholder="» » » » » » find me « « « « « «">
@@ -421,102 +426,28 @@
 
 <script>
 import modalFX from '../../node_modules/bulma-modal-fx/dist/js/modal-fx.min.js'
-import FileUpload from 'vue-upload-component'
 import Full from './Full.vue'
 export default {
     name: 'HelloWorld',
-    components: { FileUpload, Full },
+    components: { Full },
     data () {
         return {
-            photos: []
+            photos: [],
+            errors: []
         }
     },
+    mounted: function() {
+        this.getPhotos()
+    },
     methods: {
-        inputFile(newFile, oldFile) {
-            if (newFile && !oldFile) {
-                // Add file
-            }
-
-            if (newFile && oldFile) {
-                // Update file
-
-                // Start upload
-                if (newFile.active !== oldFile.active) {
-                    console.log('Start upload', newFile.active, newFile)
-
-                    // min size
-                    if (newFile.size >= 0 && newFile.size < 100 * 1024) {
-                        newFile = this.$refs.upload.update(newFile, {error: 'size'})
-                    }
-                }
-
-                // Upload progress
-                if (newFile.progress !== oldFile.progress) {
-                    console.log('progress', newFile.progress, newFile)
-                }
-
-                // Upload error
-                if (newFile.error !== oldFile.error) {
-                    console.log('error', newFile.error, newFile)
-                }
-
-                // Uploaded successfully
-                if (newFile.success !== oldFile.success) {
-                    console.log('success', newFile.success, newFile)
-                }
-            }
-
-            if (!newFile && oldFile) {
-                // Remove file
-
-                // Automatically delete files on the server
-                if (oldFile.success && oldFile.response.id) {
-                    // $.ajax({
-                    //   type: 'DELETE',
-                    //   url: '/file/delete?id=' + oldFile.response.id,
-                    // });
-                }
-            }
-
-            // Automatic upload
-            if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
-                if (!this.$refs.upload.active) {
-                    this.$refs.upload.active = true
-                }
-            }
-        },
-        inputFilter(newFile, oldFile, prevent) {
-            if (newFile && !oldFile) {
-                // Add file
-                
-                // Filter non-image file
-                // Will not be added to files
-                if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
-                    return prevent()
-                }
-                
-                // Create the 'blob' field for thumbnail preview
-                newFile.blob = ''
-                let URL = window.URL || window.webkitURL
-                if (URL && URL.createObjectURL) {
-                    newFile.blob = URL.createObjectURL(newFile.file)
-                }
-            }
-
-            if (newFile && oldFile) {
-                // Update file
-                // Increase the version number
-                if (!newFile.version) {
-                    newFile.version = 0
-                }
-                newFile.version++
-            }
-
-            if (!newFile && oldFile) {
-                // Remove file
-                // Refused to remove the file
-                // return prevent()
-            }
+        getPhotos () {
+            this.$http.get(`/photos`)
+                .then(response => {
+                    this.photos = response.data.content
+                })
+                .catch(e => {
+                    this.errors.push(e)
+                })
         }
     }
   }

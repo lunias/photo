@@ -341,16 +341,13 @@ export default {
             postAction: '/api/photos/upload',
             autoCompress: 1024 * 1024,
             uploadAuto: false,
-            isOption: false,
-            
+            isOption: false,            
             addData: {
                 show: false,
                 name: '',
                 type: '',
                 content: '',
-            },
-            
-            
+            },                        
             editFile: {
                 show: false,
                 name: '',
@@ -389,8 +386,21 @@ export default {
             }
         },
     },
-    
+    beforeMount: function() {
+        this.updateBatchId()
+    },
     methods: {
+        updateBatchId() {
+            var d = new Date().getTime();
+            if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+                d += performance.now(); //use high-precision timer if available
+            }
+            this.batchId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+        },
         inputFilter(newFile, oldFile, prevent) {
             if (newFile && !oldFile) {
                 // Before adding a file
@@ -444,6 +454,8 @@ export default {
         if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
           newFile.thumb = newFile.blob
         }
+
+          newFile.data = {'batchId': this.batchId}
       }
     },
 

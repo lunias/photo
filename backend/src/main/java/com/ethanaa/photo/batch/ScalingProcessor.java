@@ -47,7 +47,7 @@ public class ScalingProcessor implements ItemProcessor<File, PhotoData> {
 
         BufferedImage photo = ImageIO.read(file);
         if (photo.getWidth() > MAX_WIDTH) {
-            photo = Scalr.resize(ImageIO.read(file), Scalr.Mode.AUTOMATIC, MAX_WIDTH);
+            photo = Scalr.resize(photo, Scalr.Mode.AUTOMATIC, MAX_WIDTH);
         }
 
         photo = Thumbnails.of(photo)

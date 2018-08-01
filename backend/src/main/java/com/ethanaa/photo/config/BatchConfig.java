@@ -1,7 +1,6 @@
 package com.ethanaa.photo.config;
 
 import com.ethanaa.photo.batch.*;
-import com.ethanaa.photo.batch.upload.UploadJobCompletionListener;
 import com.ethanaa.photo.model.PhotoData;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -55,8 +54,7 @@ public class BatchConfig {
     }
 
     @Bean
-    Job uploadJob(Step thumbnailStep, Step scaleStep,
-                  UploadJobCompletionListener listener) {
+    Job uploadJob(Step thumbnailStep, Step scaleStep) {
 
         Flow uploadFlow = new FlowBuilder<Flow>("uploadFlow")
                 .split(taskExecutor)
@@ -68,7 +66,6 @@ public class BatchConfig {
 
 
         return jobBuilderFactory.get("uploadJob")
-                .listener(listener)
                 .incrementer(new RunIdIncrementer())
                 .start(uploadFlow)
                 .end()
