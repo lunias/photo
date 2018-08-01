@@ -1,3 +1,9 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 spring:
   servlet:
     multipart:
@@ -17,6 +23,10 @@ spring:
     password:
     driver-class-name: org.h2.Driver
   jpa.hibernate.ddl-auto: update
+  boot:
+    admin:
+      client:
+        url: "http://localhost:8082"
 
 # show sql statements
 # logging.level.org.hibernate.SQL: debug

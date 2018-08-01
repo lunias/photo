@@ -6,8 +6,8 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Buefy from 'buefy'
-import 'buefy/lib/buefy.css'
 import '@mdi/font/css/materialdesignicons.css'
+import 'buefy/lib/buefy.css'
 import 'bulma-modal-fx/dist/css/modal-fx.css'
 
 Vue.config.productionTip = false
