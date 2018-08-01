@@ -1,2 +1,8 @@
 server:
   port: 8082
+spring:
+  boot:
+    admin:
+      ui:
+        brand: "<img src=\"img/logo.png\"><span>Photo Admin</span>"
+        title: "Photo Admin"
