@@ -454,9 +454,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped> 
+<style lang="scss" scoped> 
 #root {
-background: #041221;
+background: #613a43;
 }
 .card.large {
 height: 600px;
@@ -481,7 +481,7 @@ border-radius: 90vw;
 opacity: 0.6;
 }
 .flow-1 {
-background: #3281ff;
+background: #e9eddc;
 -webkit-animation: rotating 20s linear infinite;
 -moz-animation: rotating 20s linear infinite;
 -ms-animation: rotating 20s linear infinite;
@@ -489,7 +489,7 @@ background: #3281ff;
 animation: rotating 20s linear infinite;
 }
 .flow-2 {
-background: #f442ee;
+background: #d1a827;
 position: absolute;
 -webkit-animation: rotating 15s linear infinite;
 -moz-animation: rotating 15s linear infinite;
@@ -498,7 +498,7 @@ position: absolute;
 animation: rotating 15s linear infinite;
 }
 .flow-3 {
-background: #42eef4;
+background: #e3bab3;
 position: absolute;
 -webkit-animation: rotating 7s linear infinite;
 -moz-animation: rotating 7s linear infinite;
@@ -546,7 +546,7 @@ transform: rotate(360deg);
 animation: rotating 2s linear infinite;
 }
 .footer{
-background-color: #222831;
+background-color: #363636;
 color: lemonchiffon;
 }
 .footer p, strong

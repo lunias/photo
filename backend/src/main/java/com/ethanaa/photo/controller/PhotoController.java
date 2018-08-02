@@ -1,7 +1,9 @@
 package com.ethanaa.photo.controller;
 
+import com.ethanaa.photo.model.PhotoBatch;
 import com.ethanaa.photo.model.PhotoData;
 import com.ethanaa.photo.repository.PhotoDataRepository;
+import com.ethanaa.photo.service.PhotoBatchService;
 import com.ethanaa.photo.service.PhotoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +38,16 @@ public class PhotoController {
     private static final Logger LOG = LoggerFactory.getLogger(PhotoController.class);
 
     private PhotoService photoService;
+    private PhotoBatchService photoBatchService;
     private PhotoDataRepository photoDataRepository;
 
     @Autowired
     public PhotoController(PhotoService photoService,
+                           PhotoBatchService photoBatchService,
                            PhotoDataRepository photoDataRepository) {
 
         this.photoService = photoService;
+        this.photoBatchService = photoBatchService;
         this.photoDataRepository = photoDataRepository;
     }
 
@@ -74,6 +79,8 @@ public class PhotoController {
             JobRestartException, JobInstanceAlreadyCompleteException, IOException, InterruptedException, ExecutionException, TimeoutException {
 
         String uploadId = UUID.randomUUID().toString();
+
+        photoBatchService.submit(authentication, batchId, photoFiles);
 
         LOG.info("Creating upload directory");
 
