@@ -1,6 +1,9 @@
 package com.ethanaa.photo.batch;
 
+import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoBatch;
 import com.ethanaa.photo.model.PhotoData;
+import com.ethanaa.photo.repository.PhotoBatchRepository;
 import com.ethanaa.photo.repository.PhotoDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,39 +19,31 @@ import java.util.List;
 
 @Component
 @StepScope
-public class ThumbnailFileWriter implements ItemWriter<PhotoData> {
+public class ThumbnailFileWriter implements ItemWriter<PhotoBatch> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ThumbnailFileWriter.class);
 
-    private String thumbnailDirectory;
-    private PhotoDataRepository photoDataRepository;
+    private PhotoBatchRepository photoBatchRepository;
 
     @Autowired
-    public ThumbnailFileWriter(@Value("#{jobParameters['thumbDir']}") String thumbnailDirectory,
-                               PhotoDataRepository photoDataRepository) {
+    public ThumbnailFileWriter(PhotoBatchRepository photoBatchRepository) {
 
-        this.thumbnailDirectory = thumbnailDirectory;
-        this.photoDataRepository = photoDataRepository;
+        this.photoBatchRepository = photoBatchRepository;
     }
 
     @Override
-    public void write(List<? extends PhotoData> thumbnailDataList) throws Exception {
+    public void write(List<? extends PhotoBatch> photoBatches) throws Exception {
 
-        LOG.info("Writing thumbnail files to {}", thumbnailDirectory);
+        for (PhotoBatch photoBatch : photoBatches) {
 
-        File file = new File(thumbnailDirectory);
-        if (!file.exists()) {
-            file.mkdirs();
+            for (Photo photo : photoBatch.getPhotos()) {
+
+                photo.writeToThumb();
+
+                LOG.info("Wrote thumbnail for {}", photo.getOriginalFilename());
+            }
         }
 
-        for (PhotoData thumbnailData : thumbnailDataList) {
-
-            ImageIO.write(thumbnailData.getBufferedImage(), thumbnailData.getExtension(),
-                    thumbnailData.createThumbnailFile(thumbnailDirectory));
-
-            LOG.info("Wrote thumbnail {}", thumbnailData);
-        }
-
-        photoDataRepository.saveAll(thumbnailDataList);
+        photoBatchRepository.saveAll(photoBatches);
     }
 }

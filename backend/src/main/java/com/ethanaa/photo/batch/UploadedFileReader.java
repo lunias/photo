@@ -1,5 +1,7 @@
 package com.ethanaa.photo.batch;
 
+import com.ethanaa.photo.model.PhotoBatch;
+import com.ethanaa.photo.service.PhotoBatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -19,29 +21,26 @@ import java.util.stream.Stream;
 
 @Component
 @StepScope
-public class UploadedFileReader implements ItemReader<File> {
+public class UploadedFileReader implements ItemReader<PhotoBatch> {
 
     private static final Logger LOG = LoggerFactory.getLogger(UploadedFileReader.class);
 
-    private ConcurrentLinkedDeque<File> uploadedFiles;
+    private PhotoBatchService photoBatchService;
 
-    public UploadedFileReader(@Value("#{jobParameters['rawDir']}") String rawDirectory) throws IOException {
+    public UploadedFileReader(PhotoBatchService photoBatchService) {
 
-        this.uploadedFiles = Files.find(
-                Paths.get(rawDirectory), 999, (p, bfa) -> bfa.isRegularFile())
-                .map(Path::toFile)
-                .collect(Collectors.toCollection(ConcurrentLinkedDeque::new));
+        this.photoBatchService = photoBatchService;
     }
 
     @Override
-    public File read() throws Exception {
+    public PhotoBatch read() throws Exception {
 
-        File file = uploadedFiles.pollFirst();
+        PhotoBatch photoBatch = photoBatchService.poll();
 
-        if (file != null) {
-            LOG.info("Read file from {}", file);
+        if (photoBatch != null) {
+            LOG.info("Read photo batch: {}", photoBatch);
         }
 
-        return file;
+        return photoBatch;
     }
 }

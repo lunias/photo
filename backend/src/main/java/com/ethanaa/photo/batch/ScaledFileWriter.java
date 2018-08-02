@@ -1,6 +1,9 @@
 package com.ethanaa.photo.batch;
 
+import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoBatch;
 import com.ethanaa.photo.model.PhotoData;
+import com.ethanaa.photo.repository.PhotoBatchRepository;
 import com.ethanaa.photo.repository.PhotoDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,39 +19,31 @@ import java.util.List;
 
 @Component
 @StepScope
-public class ScaledFileWriter implements ItemWriter<PhotoData> {
+public class ScaledFileWriter implements ItemWriter<PhotoBatch> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ScaledFileWriter.class);
 
-    private String scaledDirectory;
-    private PhotoDataRepository photoDataRepository;
+    private PhotoBatchRepository photoBatchRepository;
 
     @Autowired
-    public ScaledFileWriter(@Value("#{jobParameters['scaledDir']}") String scaledDirectory,
-                            PhotoDataRepository photoDataRepository) {
+    public ScaledFileWriter(PhotoBatchRepository photoBatchRepository) {
 
-        this.scaledDirectory = scaledDirectory;
-        this.photoDataRepository = photoDataRepository;
+        this.photoBatchRepository = photoBatchRepository;
     }
 
     @Override
-    public void write(List<? extends PhotoData> scaledDataList) throws Exception {
+    public void write(List<? extends PhotoBatch> photoBatches) throws Exception {
 
-        LOG.info("Writing scaled files to {}", scaledDirectory);
+        for (PhotoBatch photoBatch : photoBatches) {
 
-        File file = new File(scaledDirectory);
-        if (!file.exists()) {
-            file.mkdirs();
+            for (Photo photo : photoBatch.getPhotos()) {
+
+                photo.writeToScaled();
+
+                LOG.info("Wrote scaled for {}", photo.getOriginalFilename());
+            }
         }
 
-        for (PhotoData scaledData : scaledDataList) {
-
-            ImageIO.write(scaledData.getBufferedImage(), scaledData.getExtension(),
-                    scaledData.createScaledFile(scaledDirectory));
-
-            LOG.info("Wrote scaled {}", scaledData);
-        }
-
-        photoDataRepository.saveAll(scaledDataList);
+        photoBatchRepository.saveAll(photoBatches);
     }
 }

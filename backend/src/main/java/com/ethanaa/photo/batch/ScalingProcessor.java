@@ -1,5 +1,7 @@
 package com.ethanaa.photo.batch;
 
+import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoBatch;
 import com.ethanaa.photo.model.PhotoData;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
@@ -19,7 +21,7 @@ import java.io.IOException;
 
 @Component
 @StepScope
-public class ScalingProcessor implements ItemProcessor<File, PhotoData> {
+public class ScalingProcessor implements ItemProcessor<PhotoBatch, PhotoBatch> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ScalingProcessor.class);
 
@@ -35,28 +37,30 @@ public class ScalingProcessor implements ItemProcessor<File, PhotoData> {
         }
     }
 
-    private String batchId;
+    public ScalingProcessor() {
 
-    public ScalingProcessor(@Value("#{jobParameters['batchId']}") String batchId) {
-
-        this.batchId = batchId;
     }
 
     @Override
-    public PhotoData process(File file) throws Exception {
+    public PhotoBatch process(PhotoBatch photoBatch) throws Exception {
 
-        BufferedImage photo = ImageIO.read(file);
-        if (photo.getWidth() > MAX_WIDTH) {
-            photo = Scalr.resize(photo, Scalr.Mode.AUTOMATIC, MAX_WIDTH);
+        for (Photo photo : photoBatch.getPhotos()) {
+
+            BufferedImage photoImage = ImageIO.read(photo.getPhotoFile().getInputStream());
+            if (photoImage.getWidth() > MAX_WIDTH) {
+                photoImage = Scalr.resize(photoImage, Scalr.Mode.AUTOMATIC, MAX_WIDTH);
+            }
+
+            photoImage = Thumbnails.of(photoImage)
+                    .size(photoImage.getWidth(), photoImage.getHeight())
+                    .watermark(Positions.CENTER, WATERMARK, 0.8f)
+                    .asBufferedImage();
+
+            photo.setPhotoImage(photoImage);
+
+            LOG.info("Created scaled for " + photo.getOriginalFilename());
         }
 
-        photo = Thumbnails.of(photo)
-                .size(photo.getWidth(), photo.getHeight())
-                .watermark(Positions.CENTER, WATERMARK, 0.8f)
-                .asBufferedImage();
-
-        LOG.info("Created scaled for " + file.getCanonicalPath());
-
-        return new PhotoData(batchId, file, photo, PhotoData.Type.SCALED);
+        return photoBatch;
     }
 }

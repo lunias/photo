@@ -1,5 +1,7 @@
 package com.ethanaa.photo.batch;
 
+import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoBatch;
 import com.ethanaa.photo.model.PhotoData;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
@@ -14,26 +16,28 @@ import java.io.File;
 
 @Component
 @StepScope
-public class ThumbnailProcessor implements ItemProcessor<File, PhotoData> {
+public class ThumbnailProcessor implements ItemProcessor<PhotoBatch, PhotoBatch> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ThumbnailProcessor.class);
 
-    private String batchId;
+    public ThumbnailProcessor() {
 
-    public ThumbnailProcessor(@Value("#{jobParameters['batchId']}") String batchId) {
-
-        this.batchId = batchId;
     }
 
     @Override
-    public PhotoData process(File file) throws Exception {
+    public PhotoBatch process(PhotoBatch photoBatch) throws Exception {
 
-        BufferedImage thumbnail = Thumbnails.of(file)
-                .size(160, 160)
-                .asBufferedImage();
+        for (Photo photo : photoBatch.getPhotos()) {
 
-        LOG.info("Created thumbnail for " + file.getCanonicalPath());
+            BufferedImage thumbnail = Thumbnails.of(photo.getPhotoFile().getInputStream())
+                    .size(160, 160)
+                    .asBufferedImage();
 
-        return new PhotoData(batchId, file, thumbnail, PhotoData.Type.THUMBNAIL);
+            photo.setPhotoImage(thumbnail);
+
+            LOG.info("Created thumbnail for " + photo.getOriginalFilename());
+        }
+
+        return photoBatch;
     }
 }

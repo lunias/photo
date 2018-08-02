@@ -1,6 +1,7 @@
 package com.ethanaa.photo.config;
 
 import com.ethanaa.photo.batch.*;
+import com.ethanaa.photo.model.PhotoBatch;
 import com.ethanaa.photo.model.PhotoData;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -56,7 +57,7 @@ public class BatchConfig {
     @Bean
     Job uploadJob(Step thumbnailStep, Step scaleStep) {
 
-        Flow uploadFlow = new FlowBuilder<Flow>("uploadFlow")
+        Flow processFlow = new FlowBuilder<Flow>("processFlow")
                 .split(taskExecutor)
                 .add(
                         new FlowBuilder<Flow>("thumbnailFlow").from(thumbnailStep).end(),
@@ -67,7 +68,7 @@ public class BatchConfig {
 
         return jobBuilderFactory.get("uploadJob")
                 .incrementer(new RunIdIncrementer())
-                .start(uploadFlow)
+                .start(processFlow)
                 .end()
                 .build();
     }
@@ -78,7 +79,7 @@ public class BatchConfig {
                        ThumbnailFileWriter thumbnailFileWriter) {
 
         return stepBuilderFactory.get("thumbnailStep")
-                .<File, PhotoData> chunk(10)
+                .<PhotoBatch, PhotoBatch> chunk(10)
                 .reader(uploadedFileReader)
                 .processor(thumbnailProcessor)
                 .writer(thumbnailFileWriter)
@@ -92,7 +93,7 @@ public class BatchConfig {
                    ScaledFileWriter scaledFileWriter) {
 
         return stepBuilderFactory.get("scaleStep")
-                .<File, PhotoData> chunk(10)
+                .<PhotoBatch, PhotoBatch> chunk(10)
                 .reader(uploadedFileReader)
                 .processor(scalingProcessor)
                 .writer(scaledFileWriter)
