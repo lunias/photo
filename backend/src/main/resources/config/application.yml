@@ -25,7 +25,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  jpa.hibernate.ddl-auto: update
+  jpa:
+    hibernate.ddl-auto: create-drop #update
   boot:
     admin:
       client:
@@ -36,6 +37,8 @@ spring:
 logging:
   file: "/var/log/photo.log"
   pattern.file: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
-
-# show sql statements
-# logging.level.org.hibernate.SQL: debug
+  level:
+    org:
+      hibernate:
+        sql: debug
+        # type: trace

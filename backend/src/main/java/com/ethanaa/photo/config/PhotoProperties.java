@@ -13,10 +13,12 @@ public class PhotoProperties {
     private String outputDir;
 
     public String getOutputDir() {
+
         return outputDir;
     }
 
     public void setOutputDir(String outputDir) {
+
         this.outputDir = outputDir;
     }
 }

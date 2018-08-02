@@ -1,6 +1,7 @@
 package com.ethanaa.photo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.io.Files;
@@ -40,11 +41,15 @@ public class Photo implements Serializable {
 
     @JsonIgnore
     @Transient
-    private MultipartFile photoFile;
+    private BufferedImage rawImage;
 
     @JsonIgnore
     @Transient
-    private BufferedImage photoImage;
+    private BufferedImage thumbImage;
+
+    @JsonIgnore
+    @Transient
+    private BufferedImage scaledImage;
 
     @Column(name = "original_filename")
     private String originalFilename;
@@ -55,17 +60,23 @@ public class Photo implements Serializable {
     @Column
     private long size;
 
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "batch_id")
+    @JoinColumns({
+            @JoinColumn(
+                    name = "batch_id",
+                    referencedColumnName = "id"),
+            @JoinColumn(
+                    name = "username",
+                    referencedColumnName = "username")
+    })
     private PhotoBatch photoBatch;
 
-    public Photo(String outputDirectory, String username, String batchId, MultipartFile photoFile, LocalDateTime createdAt) {
+    public Photo(String outputDirectory, String username, String batchId, MultipartFile photoFile, LocalDateTime createdAt) throws IOException {
 
         if (photoFile.isEmpty()) {
             throw new RuntimeException("Empty file");
         }
-
-        this.photoFile = photoFile;
 
         this.originalFilename = photoFile.getOriginalFilename();
 
@@ -73,13 +84,15 @@ public class Photo implements Serializable {
             throw new RuntimeException("Invalid filename");
         }
 
+        this.rawImage = ImageIO.read(photoFile.getInputStream());
+
         this.extension = Files.getFileExtension(this.originalFilename);
         this.contentType = photoFile.getContentType();
         this.size = photoFile.getSize();
 
-        this.rawPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoData.Type.RAW, batchId);
-        this.thumbPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoData.Type.THUMBNAIL, batchId);
-        this.scaledPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoData.Type.SCALED, batchId);
+        this.rawPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoType.RAW, batchId);
+        this.thumbPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoType.THUMBNAIL, batchId);
+        this.scaledPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoType.SCALED, batchId);
 
         this.rawPath += this.originalFilename;
         this.thumbPath += this.originalFilename;
@@ -90,7 +103,7 @@ public class Photo implements Serializable {
         //
     }
 
-    private static String createPath(String outputDir, String username, LocalDate createDate, PhotoData.Type type, String batchId) {
+    private static String createPath(String outputDir, String username, LocalDate createDate, PhotoType type, String batchId) {
 
         return outputDir + username +
                 "/" + createDate +
@@ -101,49 +114,50 @@ public class Photo implements Serializable {
 
     public void writeToRaw() throws IOException {
 
-        if (this.photoFile == null) {
-            throw new RuntimeException("Null photo file");
+        if (this.rawImage == null) {
+            throw new RuntimeException("Null raw image");
         }
 
-        this.photoFile.transferTo(getFile(PhotoData.Type.RAW));
+        ImageIO.write(this.rawImage, this.extension, getFile(PhotoType.RAW));
     }
 
     public void writeToScaled() throws IOException {
 
-        if (this.photoImage == null) {
-            throw new RuntimeException("Null photo image");
+        if (this.scaledImage == null) {
+            throw new RuntimeException("Null scaled image");
         }
 
-        ImageIO.write(this.photoImage, this.extension, getFile(PhotoData.Type.SCALED));
+        ImageIO.write(this.scaledImage, this.extension, getFile(PhotoType.SCALED));
     }
 
     public void writeToThumb() throws IOException {
 
-        if (this.photoImage == null) {
-            throw new RuntimeException("Null photo image");
+        if (this.thumbImage == null) {
+            throw new RuntimeException("Null thumb image");
         }
 
-        ImageIO.write(this.photoImage, this.extension, getFile(PhotoData.Type.THUMBNAIL));
+        ImageIO.write(this.thumbImage, this.extension, getFile(PhotoType.THUMBNAIL));
     }
 
-    public void deleteFile(PhotoData.Type type) {
+    public void deleteFile(PhotoType type) {
 
         File photoFile = new File(getPath(type));
         photoFile.delete();
     }
 
-    private File getFile(PhotoData.Type type) {
+    private File getFile(PhotoType type) {
 
         File file = new File(getPath(type));
+        File parentDirectory = file.getParentFile();
 
-        if (this.originalFilename.contains("/") && !file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+        if (!parentDirectory.exists()) {
+            parentDirectory.mkdirs();
         }
 
         return file;
     }
 
-    private String getPath(PhotoData.Type type) {
+    private String getPath(PhotoType type) {
 
         switch (type) {
 
@@ -164,6 +178,14 @@ public class Photo implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getRawPath() {
@@ -190,20 +212,28 @@ public class Photo implements Serializable {
         this.scaledPath = scaledPath;
     }
 
-    public MultipartFile getPhotoFile() {
-        return photoFile;
+    public BufferedImage getRawImage() {
+        return rawImage;
     }
 
-    public void setPhotoFile(MultipartFile photoFile) {
-        this.photoFile = photoFile;
+    public void setRawImage(BufferedImage rawImage) {
+        this.rawImage = rawImage;
     }
 
-    public BufferedImage getPhotoImage() {
-        return photoImage;
+    public BufferedImage getThumbImage() {
+        return thumbImage;
     }
 
-    public void setPhotoImage(BufferedImage photoImage) {
-        this.photoImage = photoImage;
+    public void setThumbImage(BufferedImage thumbImage) {
+        this.thumbImage = thumbImage;
+    }
+
+    public BufferedImage getScaledImage() {
+        return scaledImage;
+    }
+
+    public void setScaledImage(BufferedImage scaledImage) {
+        this.scaledImage = scaledImage;
     }
 
     public String getOriginalFilename() {

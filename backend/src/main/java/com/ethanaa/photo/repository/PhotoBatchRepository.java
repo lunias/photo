@@ -1,6 +1,7 @@
 package com.ethanaa.photo.repository;
 
 import com.ethanaa.photo.model.PhotoBatch;
+import com.ethanaa.photo.model.PhotoBatchId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface PhotoBatchRepository extends PagingAndSortingRepository<PhotoBatch, String> {
+public interface PhotoBatchRepository extends PagingAndSortingRepository<PhotoBatch, PhotoBatchId> {
 
-    Page<PhotoBatch> findByUsername(@Param("username") String username, Pageable pageable);
+    Page<PhotoBatch> findByIdUsername(@Param("username") String username, Pageable pageable);
 }

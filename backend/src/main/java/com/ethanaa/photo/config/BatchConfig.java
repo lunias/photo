@@ -1,8 +1,7 @@
 package com.ethanaa.photo.config;
 
 import com.ethanaa.photo.batch.*;
-import com.ethanaa.photo.model.PhotoBatch;
-import com.ethanaa.photo.model.PhotoData;
+import com.ethanaa.photo.model.Photo;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -14,13 +13,15 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.item.support.CompositeItemProcessor;
+import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
-import java.io.File;
+import java.util.Arrays;
 
 @Configuration
 @EnableBatchProcessing
@@ -55,49 +56,34 @@ public class BatchConfig {
     }
 
     @Bean
-    Job uploadJob(Step thumbnailStep, Step scaleStep) {
-
-        Flow processFlow = new FlowBuilder<Flow>("processFlow")
-                .split(taskExecutor)
-                .add(
-                        new FlowBuilder<Flow>("thumbnailFlow").from(thumbnailStep).end(),
-                        new FlowBuilder<Flow>("scaleFlow").from(scaleStep).end()
-                )
-                .end();
-
+    Job uploadJob(Step processPhoto) {
 
         return jobBuilderFactory.get("uploadJob")
                 .incrementer(new RunIdIncrementer())
-                .start(processFlow)
-                .end()
+                .start(processPhoto)
                 .build();
     }
 
     @Bean
-    Step thumbnailStep(UploadedFileReader uploadedFileReader,
+    Step processPhoto(UploadedPhotoReader uploadedPhotoReader,
                        ThumbnailProcessor thumbnailProcessor,
-                       ThumbnailFileWriter thumbnailFileWriter) {
+                       ScalingProcessor scalingProcessor,
+                       ThumbnailPhotoWriter thumbnailPhotoWriter,
+                       ScaledPhotoWriter scaledPhotoWriter,
+                       RawFileWriter rawFileWriter) {
 
-        return stepBuilderFactory.get("thumbnailStep")
-                .<PhotoBatch, PhotoBatch> chunk(10)
-                .reader(uploadedFileReader)
-                .processor(thumbnailProcessor)
-                .writer(thumbnailFileWriter)
-                //.taskExecutor(taskExecutor)
-                .build();
-    }
+        CompositeItemProcessor<Photo, Photo> photoProcessorChain = new CompositeItemProcessor<>();
+        photoProcessorChain.setDelegates(Arrays.asList(thumbnailProcessor, scalingProcessor));
 
-    @Bean
-    Step scaleStep(UploadedFileReader uploadedFileReader,
-                   ScalingProcessor scalingProcessor,
-                   ScaledFileWriter scaledFileWriter) {
+        CompositeItemWriter<Photo> photoWriterChain = new CompositeItemWriter<>();
+        photoWriterChain.setDelegates(Arrays.asList(thumbnailPhotoWriter, scaledPhotoWriter, rawFileWriter));
 
-        return stepBuilderFactory.get("scaleStep")
-                .<PhotoBatch, PhotoBatch> chunk(10)
-                .reader(uploadedFileReader)
-                .processor(scalingProcessor)
-                .writer(scaledFileWriter)
-                //.taskExecutor(taskExecutor)
+
+        return stepBuilderFactory.get("processPhoto")
+                .<Photo, Photo> chunk(10)
+                .reader(uploadedPhotoReader)
+                .processor(photoProcessorChain)
+                .writer(photoWriterChain)
                 .build();
     }
 }
