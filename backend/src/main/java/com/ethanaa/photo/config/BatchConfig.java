@@ -78,12 +78,12 @@ public class BatchConfig {
         CompositeItemWriter<Photo> photoWriterChain = new CompositeItemWriter<>();
         photoWriterChain.setDelegates(Arrays.asList(thumbnailPhotoWriter, scaledPhotoWriter, rawFileWriter));
 
-
         return stepBuilderFactory.get("processPhoto")
-                .<Photo, Photo> chunk(10)
+                .<Photo, Photo> chunk(5)
                 .reader(uploadedPhotoReader)
                 .processor(photoProcessorChain)
                 .writer(photoWriterChain)
+                .taskExecutor(taskExecutor)
                 .build();
     }
 }

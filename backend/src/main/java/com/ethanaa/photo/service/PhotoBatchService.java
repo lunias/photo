@@ -32,7 +32,7 @@ public class PhotoBatchService {
 
     private ConcurrentHashMap<String, LinkedBlockingQueue<Photo>> photoBatches = new ConcurrentHashMap<>();
 
-    private static final long MAX_POLL_MS = 5000L;
+    private static final long MAX_POLL_MS = 500L;
 
     private String outputDirectory;
 
@@ -90,7 +90,7 @@ public class PhotoBatchService {
         try {
             photo = photos.poll(MAX_POLL_MS, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ie) {
-            LOG.debug("No new photo added to batch {} in {} ms. Batch complete.", batchId, MAX_POLL_MS);
+            LOG.error("Waited on batch {} for {} ms. Interrupted. {}", batchId, MAX_POLL_MS, ie);
         }
 
         if (photo == null) {

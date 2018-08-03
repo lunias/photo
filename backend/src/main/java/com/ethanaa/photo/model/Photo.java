@@ -60,6 +60,7 @@ public class Photo implements Serializable {
     @Column
     private long size;
 
+    @JsonIgnore
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
