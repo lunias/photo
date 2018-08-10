@@ -17,7 +17,7 @@ public class AsyncConfig {
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(30);
         executor.setQueueCapacity(10);
-        executor.setThreadNamePrefix("task-");
+        executor.setThreadNamePrefix("batch-thread-");
         executor.initialize();
 
         return executor;

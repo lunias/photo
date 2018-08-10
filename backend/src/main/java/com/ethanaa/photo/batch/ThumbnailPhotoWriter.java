@@ -1,7 +1,10 @@
 package com.ethanaa.photo.batch;
 
 import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoType;
 import com.ethanaa.photo.repository.PhotoRepository;
+import com.ethanaa.photo.service.PhotoService;
+import com.ethanaa.photo.service.PhotoStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -17,12 +20,12 @@ public class ThumbnailPhotoWriter implements ItemWriter<Photo> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ThumbnailPhotoWriter.class);
 
-    private PhotoRepository photoRepository;
+    private PhotoService photoService;
 
     @Autowired
-    public ThumbnailPhotoWriter(PhotoRepository photoRepository) {
+    public ThumbnailPhotoWriter(PhotoService photoService) {
 
-        this.photoRepository = photoRepository;
+        this.photoService = photoService;
     }
 
     @Override
@@ -30,12 +33,7 @@ public class ThumbnailPhotoWriter implements ItemWriter<Photo> {
 
         for (Photo photo : photos) {
 
-            photo.writeToThumb();
-            photo.setThumbImage(null);
-
-            photoRepository.save(photo);
-
-            LOG.info("Wrote thumbnail for {}", photo);
+            photoService.write(photo, PhotoType.THUMBNAIL);
         }
     }
 }

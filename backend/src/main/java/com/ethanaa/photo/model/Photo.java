@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.io.Files;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,17 +14,22 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "PHOTO")
 @EntityListeners(AuditingEntityListener.class)
 public class Photo implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Photo.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,6 +57,10 @@ public class Photo implements Serializable {
     @JsonIgnore
     @Transient
     private BufferedImage scaledImage;
+
+    @Lob
+    @Column(name = "thumb_src", columnDefinition = "CLOB")
+    private String thumbSrc;
 
     @Column(name = "original_filename")
     private String originalFilename;
@@ -113,52 +124,7 @@ public class Photo implements Serializable {
                 "/";
     }
 
-    public void writeToRaw() throws IOException {
-
-        if (this.rawImage == null) {
-            throw new RuntimeException("Null raw image");
-        }
-
-        ImageIO.write(this.rawImage, this.extension, getFile(PhotoType.RAW));
-    }
-
-    public void writeToScaled() throws IOException {
-
-        if (this.scaledImage == null) {
-            throw new RuntimeException("Null scaled image");
-        }
-
-        ImageIO.write(this.scaledImage, this.extension, getFile(PhotoType.SCALED));
-    }
-
-    public void writeToThumb() throws IOException {
-
-        if (this.thumbImage == null) {
-            throw new RuntimeException("Null thumb image");
-        }
-
-        ImageIO.write(this.thumbImage, this.extension, getFile(PhotoType.THUMBNAIL));
-    }
-
-    public void deleteFile(PhotoType type) {
-
-        File photoFile = new File(getPath(type));
-        photoFile.delete();
-    }
-
-    private File getFile(PhotoType type) {
-
-        File file = new File(getPath(type));
-        File parentDirectory = file.getParentFile();
-
-        if (!parentDirectory.exists()) {
-            parentDirectory.mkdirs();
-        }
-
-        return file;
-    }
-
-    private String getPath(PhotoType type) {
+    public String getPath(PhotoType type) {
 
         switch (type) {
 
@@ -171,6 +137,48 @@ public class Photo implements Serializable {
         }
 
         return "";
+    }
+
+    @JsonIgnore
+    public List<String> getPaths() {
+
+        List<String> paths = new ArrayList<>(PhotoType.values().length);
+        for (PhotoType photoType : PhotoType.values()) {
+            paths.add(getPath(photoType));
+        }
+
+        return paths;
+    }
+
+    public BufferedImage getImage(PhotoType type) {
+
+        switch (type) {
+
+            case RAW:
+                return this.rawImage;
+            case THUMBNAIL:
+                return this.thumbImage;
+            case SCALED:
+                return this.scaledImage;
+        }
+
+        return null;
+    }
+
+    public void clearImage(PhotoType type) {
+
+        switch (type) {
+
+            case RAW:
+                this.setRawImage(null);
+                break;
+            case SCALED:
+                this.setScaledImage(null);
+                break;
+            case THUMBNAIL:
+                this.setThumbImage(null);
+                break;
+        }
     }
 
     public UUID getId() {
@@ -226,7 +234,23 @@ public class Photo implements Serializable {
     }
 
     public void setThumbImage(BufferedImage thumbImage) {
+
         this.thumbImage = thumbImage;
+
+        if (thumbImage == null) {
+            return;
+        }
+
+        try (ByteArrayOutputStream boas = new ByteArrayOutputStream()) {
+
+            ImageIO.write(thumbImage, getExtension(), boas);
+            boas.flush();
+
+            this.thumbSrc = "data:" + this.getContentType() + ";charset=utf-8;base64," + Base64.getEncoder().encodeToString(boas.toByteArray());
+
+        } catch (IOException ioe) {
+            LOG.error("Failed to set thumbSrc", ioe);
+        }
     }
 
     public BufferedImage getScaledImage() {
@@ -235,6 +259,10 @@ public class Photo implements Serializable {
 
     public void setScaledImage(BufferedImage scaledImage) {
         this.scaledImage = scaledImage;
+    }
+
+    public String getThumbSrc() {
+        return thumbSrc;
     }
 
     public String getOriginalFilename() {

@@ -7,8 +7,6 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.job.builder.FlowBuilder;
-import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
@@ -78,7 +76,7 @@ public class BatchConfig {
         CompositeItemWriter<Photo> photoWriterChain = new CompositeItemWriter<>();
         photoWriterChain.setDelegates(Arrays.asList(thumbnailPhotoWriter, scaledPhotoWriter, rawFileWriter));
 
-        return stepBuilderFactory.get("processPhoto")
+        return stepBuilderFactory.get("processPhotos")
                 .<Photo, Photo> chunk(5)
                 .reader(uploadedPhotoReader)
                 .processor(photoProcessorChain)

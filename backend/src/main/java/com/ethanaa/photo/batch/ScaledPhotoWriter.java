@@ -1,7 +1,9 @@
 package com.ethanaa.photo.batch;
 
 import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoType;
 import com.ethanaa.photo.repository.PhotoRepository;
+import com.ethanaa.photo.service.PhotoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -17,12 +19,12 @@ public class ScaledPhotoWriter implements ItemWriter<Photo> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ScaledPhotoWriter.class);
 
-    private PhotoRepository photoRepository;
+    private PhotoService photoService;
 
     @Autowired
-    public ScaledPhotoWriter(PhotoRepository photoRepository) {
+    public ScaledPhotoWriter(PhotoService photoService) {
 
-        this.photoRepository = photoRepository;
+        this.photoService = photoService;
     }
 
     @Override
@@ -30,12 +32,7 @@ public class ScaledPhotoWriter implements ItemWriter<Photo> {
 
         for (Photo photo : photos) {
 
-            photo.writeToScaled();
-            photo.setScaledImage(null);
-
-            photoRepository.save(photo);
-
-            LOG.info("Wrote scaled for {}", photo);
+            photoService.write(photo, PhotoType.SCALED);
         }
     }
 }

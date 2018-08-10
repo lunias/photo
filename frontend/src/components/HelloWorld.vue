@@ -66,7 +66,7 @@
     </div>
     <div class="section">
       <div class="box">
-        <img :src="'file:///' + photo.derivedPath" v-for="photo in photos">
+        <img :src="photo.thumbSrc" v-for="photo in photos">
       </div>
     </div>
     <div class="section">

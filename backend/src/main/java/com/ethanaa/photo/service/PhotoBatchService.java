@@ -56,6 +56,8 @@ public class PhotoBatchService {
 
     public void submit(Authentication authentication, String batchId, MultipartFile[] photoFiles) throws IOException {
 
+        LOG.info("{} uploading photo for batch {} (size: {})", authentication.getName(), batchId, photoFiles.length);
+
         PhotoBatch photoBatch = new PhotoBatch(authentication, batchId, photoFiles, this.outputDirectory);
 
         photoBatches.computeIfAbsent(batchId, (k) -> {
@@ -97,12 +99,16 @@ public class PhotoBatchService {
             photoBatches.remove(batchId);
         }
 
+        LOG.debug("Got photo: {}", photo);
+
         return photo;
     }
 
     private void runUploadJob(String batchId, String username)
             throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
             JobRestartException, JobInstanceAlreadyCompleteException {
+
+        LOG.debug("Running upload job: {}/{}", username, batchId);
 
         jobLauncher.run(uploadJob, new JobParameters(new HashMap<String, JobParameter>() {
             {

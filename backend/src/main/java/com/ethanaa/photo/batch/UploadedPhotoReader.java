@@ -29,12 +29,6 @@ public class UploadedPhotoReader implements ItemReader<Photo> {
     @Override
     public Photo read() throws Exception {
 
-        Photo photo = photoBatchService.getNextPhotoInBatch(batchId);
-
-        if (photo != null) {
-            LOG.info("Read photo: {}", photo);
-        }
-
-        return photo;
+        return photoBatchService.getNextPhotoInBatch(batchId);
     }
 }

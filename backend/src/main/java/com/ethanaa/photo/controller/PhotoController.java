@@ -3,6 +3,7 @@ package com.ethanaa.photo.controller;
 import com.ethanaa.photo.model.Photo;
 import com.ethanaa.photo.repository.PhotoRepository;
 import com.ethanaa.photo.service.PhotoBatchService;
+import com.ethanaa.photo.service.PhotoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -26,30 +27,14 @@ public class PhotoController {
     private static final Logger LOG = LoggerFactory.getLogger(PhotoController.class);
 
     private PhotoBatchService photoBatchService;
-    private PhotoRepository photoRepository;
+    private PhotoService photoService;
 
     @Autowired
     public PhotoController(PhotoBatchService photoBatchService,
-                           PhotoRepository photoRepository) {
+                           PhotoService photoService) {
 
         this.photoBatchService = photoBatchService;
-        this.photoRepository = photoRepository;
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<Photo>> getAllPhotos(Pageable pageable) {
-
-        return ResponseEntity.ok(photoRepository.findAll(pageable));
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllPhotos() {
-
-        photoRepository.deleteAll();
-
-        // TODO clean up disk
-
-        return ResponseEntity.ok().build();
+        this.photoService = photoService;
     }
 
     @PostMapping("/upload")
@@ -57,11 +42,23 @@ public class PhotoController {
                                          @RequestParam("batchId") String batchId,
                                          @RequestParam("file") MultipartFile[] photoFiles) throws IOException {
 
-        LOG.info("{} uploading photo for batch {} (size: {})", authentication.getName(), batchId, photoFiles.length);
-
         photoBatchService.submit(authentication, batchId, photoFiles);
 
         return ResponseEntity.ok(batchId);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Photo>> getAllPhotos(Pageable pageable) {
+
+        return ResponseEntity.ok(photoService.getPhotos(pageable));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllPhotos() {
+
+        photoService.deleteAll();
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/hello")
