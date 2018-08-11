@@ -1,6 +1,6 @@
 package com.ethanaa.photo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,10 +26,10 @@ public class PhotoBatch implements Iterable<Photo>, Serializable {
     @EmbeddedId
     private PhotoBatchId id;
 
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "photoBatch",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.REMOVE,
             orphanRemoval = true
     )
     private List<Photo> photos = new ArrayList<>();

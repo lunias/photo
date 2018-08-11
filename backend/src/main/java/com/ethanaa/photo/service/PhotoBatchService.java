@@ -79,6 +79,7 @@ public class PhotoBatchService {
             return new LinkedBlockingQueue<>();
 
         }).addAll(photoBatch.getPhotos());
+
     }
 
     public Photo getNextPhotoInBatch(String batchId) {

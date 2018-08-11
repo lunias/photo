@@ -26,7 +26,9 @@ spring:
     password:
     driver-class-name: org.h2.Driver
   jpa:
+    show-sql: false
     hibernate.ddl-auto: create-drop #update
+    properties.hibernate.format_sql: false
   boot:
     admin:
       client:

@@ -1,5 +1,6 @@
 package com.ethanaa.photo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.base.MoreObjects;
@@ -71,8 +72,7 @@ public class Photo implements Serializable {
     @Column
     private long size;
 
-    @JsonIgnore
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(
