@@ -1,4 +1,2 @@
 photo:
   output-dir: "C:/ethan/images/"
-
-# spring.profiles.include: "digital_ocean"

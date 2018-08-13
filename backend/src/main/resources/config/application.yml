@@ -1,3 +1,8 @@
+server:
+  port: 8080
+
+server.port.http: 8080
+
 photo:
   output-dir: "/home/lunias/Pictures/photo/"
 

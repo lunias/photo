@@ -1,0 +1,21 @@
+server:
+  port: 443
+  ssl:
+    key-store: /etc/letsencrypt/live/andreagv.com/keystore.p12
+    key-store-password: ${KEY_STORE_PASSWORD}
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+  compression:
+    enabled: true
+    mime-types: application/json,text/css,application/javascript
+    min-response-size: 2048
+
+
+server.port.http: 80
+
+spring.profiles.include: "digital_ocean"
+
+spring:
+  h2:
+    console:
+      enabled: false
