@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueAuth from '@websanova/vue-auth'
 import Buefy from 'buefy'
 import '@mdi/font/css/materialdesignicons.css'
 import 'bulma-modal-fx/dist/css/modal-fx.css'
@@ -14,6 +15,12 @@ Vue.config.productionTip = false
 Vue.use(VueAxios, axios.create({
   baseURL: '/api'
 }))
+
+Vue.use(VueAuth, {
+    auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
+    http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
+    router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js')
+});
 
 Vue.use(Buefy)
 

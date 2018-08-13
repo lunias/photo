@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mdi/font": "^2.5.94",
+    "@websanova/vue-auth": "^2.21.14-beta",
     "@xkeshi/image-compressor": "^0.5.3",
     "axios": "^0.18.0",
     "buefy": "^0.6.6",
