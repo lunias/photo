@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-
+  
   <section class="hero is-fullheight is-dark is-bold" v-if="['Home'].indexOf($route.name) > -1">
     <div class="hero-body">
       <div class="container has-text-centered">
@@ -11,13 +11,19 @@
         <h2 class="subtitle">
           Primary bold subtitle
         </h2>
+        <div class="container scroll-down" v-scroll-to="'#routerView'">
+          <div class="chevron"></div>
+          <div class="chevron"></div>
+          <div class="chevron"></div>
+          <span class="scroll-down-text">scroll down</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <nav id="photoNav" class="navbar is-fixed-bottom">
+  <nav id="photoNav" class="navbar is-fixed-top">
 
-    <div class="navbar-brand">
+    <div class="navbar-brand" v-scroll-to="'#app'">
       <router-link class="navbar-item" to="/">
         <img src="@/assets/logo.png" alt="andreagv.com" width="112" height="28">
       </router-link>
@@ -45,7 +51,7 @@
         <router-link class="navbar-item" to="/contact">
           Contact
         </router-link>
-        <div class="navbar-item has-dropdown is-hoverable">
+        <div id="accountMenu" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             Account
           </a>
@@ -73,7 +79,11 @@
 
   </nav>
 
-  <router-view/>
+  <span v-scroll-to="'#app'">
+    <a id="toTop" class="cd-top">Top</a>
+  </span>
+
+  <router-view id="routerView"/>
 
   <footer class="footer">
     <div class="content has-text-centered">
@@ -93,8 +103,7 @@ export default {
     name: 'App',
     data () {
         return {
-            response: [],
-            errors: []
+            
         }
     },
     mounted: function() {
@@ -121,51 +130,36 @@ export default {
                     })
                 })
             }
-        })
+        })        
         
+        const nav = document.getElementById('photoNav')
+        const toTop = document.getElementById('toTop')
         
-        const html = document.documentElement
-        const nav = document.getElementById("photoNav")
-        const getDistance = () => nav.offsetTop        
+        const getStickPoint = () => nav.offsetTop + nav.offsetHeight
         
-        let fixedBottom = true
-        let fixedTop = false
-        let stickPoint = getDistance()
-        
-        window.onscroll = function(e) {
+        window.addEventListener('scroll', function(e) {                        
             
-            let distance = getDistance() - window.pageYOffset
-            let offset = window.pageYOffset
-            
-            if (offset >= nav.clientHeight) {
-                html.classList.remove('has-navbar-fixed-bottom')
-                nav.classList.remove('is-fixed-bottom')
+            if (window.pageYOffset > getStickPoint()) {
+                toTop.classList.add('cd-is-visible')
+                //toTop.classList.add('cd-fade-out')
             } else {
-                html.classList.add('has-navbar-fixed-bottom')
-                nav.classList.add('is-fixed-bottom')
+                toTop.classList.remove('cd-is-visible')
+                toTop.classList.remove('cd-fade-out')
             }
-            
-            if ((distance <= 0) && !fixedTop) {
-                html.classList.add('has-navbar-fixed-top')
-                nav.classList.add('is-fixed-top')
-                nav.classList.add('is-transparent')
-                fixedTop = true
-                
-            } else if (fixedTop && (offset <= stickPoint)) {
-                html.classList.remove('has-navbar-fixed-top')
-                nav.classList.remove('is-fixed-top')
-                nav.classList.remove('is-transparent')
-                fixedTop = false
-            }
-        }
+        });
     },
     methods: {
+
+    },
+    computed: {
 
     }
 }
 </script>
 
 <style lang="scss">
+// Import Google Font
+@import url(https://fonts.googleapis.com/css?family=Sawarabi+Mincho);
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 
@@ -203,6 +197,10 @@ $link-focus-border: $primary;
 
 // Navbar
 $navbar-height: 4.25rem;
+$navbar-item-hover-color: $info;
+$navbar-item-active-color: $info;
+$navbar-dropdown-item-hover-color: $info;
+$navbar-dropdown-item-active-color: $info;
 
 // Footer
 $footer-background-color: $dark;
@@ -212,7 +210,7 @@ $footer-background-color: $dark;
 @import "~buefy/src/scss/buefy";
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Sawarabi Mincho', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -225,4 +223,152 @@ $footer-background-color: $dark;
   color: $light;
 }
 
+.cd-top {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    position: fixed;
+    bottom: 100px;
+    right: 10px;
+    z-index: 2000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    /* image replacement properties */
+    overflow: hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+    background: rgba(205, 205, 205, 0.8) url(./assets/arrows.svg) no-repeat center 50%;
+    background-size: 40px 40px;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+    -moz-transition: opacity .3s 0s, visibility 0s .3s;
+    transition: opacity .3s 0s, visibility 0s .3s;
+}
+
+.cd-top.cd-is-visible, .cd-top.cd-fade-out, .no-touch .cd-top:hover {
+    -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+    -moz-transition: opacity .3s 0s, visibility 0s 0s;
+    transition: opacity .3s 0s, visibility 0s 0s;
+}
+
+.cd-top.cd-is-visible {
+    /* the button becomes visible */
+    visibility: visible;
+    opacity: 1;
+}
+
+.cd-top.cd-fade-out {
+    /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+    opacity: .5;
+}
+
+.no-touch .cd-top:hover {
+    background-color: #F0563D;
+    opacity: 1;
+}
+
+@media only screen and (min-width: 768px) {
+    .cd-top {
+	      right: 20px;
+	      bottom: 20px;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .cd-top {
+	      height: 60px;
+	      width: 60px;
+	      right: 30px;
+	      bottom: 30px;
+    }
+}
+
+@media (max-width: 775px) {
+    .cd-top {
+	      bottom: 10px;
+    }
+}
+
+.scroll-down {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.chevron {
+  position: absolute;
+  width: 28px;
+  height: 8px;
+  opacity: 0;
+  transform: scale3d(0.5, 0.5, 0.5);
+  animation: move 3s ease-out infinite;
+}
+
+.chevron:first-child {
+  animation: move 3s ease-out 1s infinite;
+}
+
+.chevron:nth-child(2) {
+  animation: move 3s ease-out 2s infinite;
+}
+
+.chevron:before,
+.chevron:after {
+  content: ' ';
+  position: absolute;
+  top: 10px;
+  height: 100%;
+  width: 51%;
+  background: #fff;
+}
+
+.chevron:before {
+  left: 0;
+  transform: skew(0deg, 30deg);
+}
+
+.chevron:after {
+  right: 0;
+  width: 50%;
+  transform: skew(0deg, -30deg);
+}
+
+@keyframes move {
+  25% {
+    opacity: 1;
+
+  }
+  33% {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+  67% {
+    opacity: 1;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(55px) scale3d(0.5, 0.5, 0.5);
+  }
+}
+
+.scroll-down-text {
+  display: block;
+  margin-top: 75px;
+  margin-left: -30px;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  color: #fff;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: .25;
+  animation: pulse 2s linear alternate infinite;
+}
+
+@keyframes pulse {
+  to {
+    opacity: 1;
+  }
+}
 </style>

@@ -6,6 +6,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueAuth from '@websanova/vue-auth'
+import VueScrollTo from 'vue-scrollto'
 import Buefy from 'buefy'
 import '@mdi/font/css/materialdesignicons.css'
 import 'bulma-modal-fx/dist/css/modal-fx.css'
@@ -35,6 +36,22 @@ Vue.filter('formatSize', function (size) {
         return (size / 1024).toFixed(2) + ' KB'
     }
     return size.toString() + ' B'
+})
+
+Vue.use(VueScrollTo)
+
+// You can also pass in the default options
+Vue.use(VueScrollTo, {
+    container: "body",
+    duration: 500,
+    easing: "ease",
+    offset: 0,
+    cancelable: true,
+    onStart: false,
+    onDone: false,
+    onCancel: false,
+    x: false,
+    y: true
 })
 
 /* eslint-disable no-new */

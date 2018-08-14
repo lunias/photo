@@ -20,7 +20,9 @@
     "cropperjs": "^1.4.1",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.2",
+    "vue-parallaxy": "^1.1.1",
     "vue-router": "^3.0.1",
+    "vue-scrollto": "^2.11.0",
     "vue-upload-component": "^2.8.11"
   },
   "devDependencies": {

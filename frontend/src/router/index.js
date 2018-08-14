@@ -13,6 +13,7 @@ Vue.use(Router)
 
 export default new Router({
     mode: 'history',
+    linkExactActiveClass: 'is-active',
     routes: [
         {
             path: '/',
@@ -23,6 +24,7 @@ export default new Router({
             path: '/login',
             name: 'Login',
             component: Login,
+
             meta: {
                 guest: true
             }
