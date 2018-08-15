@@ -23,6 +23,9 @@ target
 # logback
 logback.out.xml
 
+# emacs
+.#*
+
 backend/src/main/resources/public/
 backend/target
 frontend/dist/

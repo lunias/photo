@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import Forgot from '@/components/Forgot'
 import Profile from '@/components/Profile'
 import Portfolio from '@/components/Portfolio'
 import Blog from '@/components/Blog'
@@ -14,6 +15,16 @@ Vue.use(Router)
 export default new Router({
     mode: 'history',
     linkExactActiveClass: 'is-active',
+    scrollBehavior (to, from, savedPosition) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (savedPosition) {
+                    return savedPosition
+                }
+                return resolve({ x: 0, y: 0 })
+            }, 0)
+        })
+    },
     routes: [
         {
             path: '/',
@@ -33,6 +44,14 @@ export default new Router({
             path: '/register',
             name: 'Register',
             component: Register,
+            meta: {
+                guest: true
+            }
+        },
+        {
+            path: '/forgot',
+            name: 'Forgot',
+            component: Forgot,
             meta: {
                 guest: true
             }
