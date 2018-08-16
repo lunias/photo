@@ -85,217 +85,219 @@
             </div>
             <div class="hero-body pull-top">
               <div class="container">
-                <div class="card events-card">
-	                <header class="card-header">
-		                <p class="card-header-title">
-                      Account Events
-                    </p>
-		                <a href="#" class="card-header-icon" aria-label="more options">
-			                <span class="icon">
-				                <b-icon icon="help-circle" size="is-small"></b-icon>
-			                </span>
-		                </a>
-	                </header>
-	                <div class="card-table">
-		                <div class="content">
-			                <table class="table is-fullwidth is-striped">
-				                <tbody>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-					                <tr>
-						                <td width="5%">
-							                <i class="fa fa-bell-o"></i>
-						                </td>
-						                <td>Lorum ipsum dolem aire</td>
-						                <td>
-							                <a class="button is-small is-primary" href="#">Action</a>
-						                </td>
-					                </tr>
-				                </tbody>
-			                </table>
-		                </div>
-	                </div>
-	                <footer class="card-footer">
-		                <a href="#" class="card-footer-item">View All</a>
-	                </footer>
+                <div class="box">
+                  <div class="card events-card">
+	                  <header class="card-header">
+		                  <p class="card-header-title">
+                        Account Events
+                      </p>
+		                  <a href="#" class="card-header-icon" aria-label="more options">
+			                  <span class="icon">
+				                  <b-icon icon="help-circle" size="is-small"></b-icon>
+			                  </span>
+		                  </a>
+	                  </header>
+	                  <div class="card-table">
+		                  <div class="content">
+			                  <table class="table is-fullwidth is-striped">
+				                  <tbody>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+					                  <tr>
+						                  <td width="5%">
+							                  <i class="fa fa-bell-o"></i>
+						                  </td>
+						                  <td>Lorum ipsum dolem aire</td>
+						                  <td>
+							                  <a class="button is-small is-primary" href="#">Action</a>
+						                  </td>
+					                  </tr>
+				                  </tbody>
+			                  </table>
+		                  </div>
+	                  </div>
+	                  <footer class="card-footer">
+		                  <a href="#" class="card-footer-item">View All</a>
+	                  </footer>
+                  </div>
                 </div>
               </div>
             </div>
@@ -304,13 +306,13 @@
       </div>
     </div>
   </div>
-</template>
+  </template>
 
 <script>
-export default {
+  export default {
     name: 'Profile',
     data () {
-        return {
+      return {
             
         }
     },

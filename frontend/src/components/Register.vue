@@ -6,11 +6,23 @@
         <div class="column is-6 is-offset-3">
           <div class="box">
             <div class="has-text-centered">
-            <figure class="avatar">
-              <img src="@/assets/user.jpg">
-            </figure>
+              <figure class="avatar">
+                <img src="@/assets/user.jpg">
+              </figure>
             </div>
-            <form v-on:submit.prevent>
+            <form id="registerForm" v-on:submit.prevent>
+              <b-field label="Name" custom-class="pad-right" grouped>
+                  <b-input size="is-medium"
+                           icon="account-card-details"
+                           minlength="2"
+                           maxlength="32"
+                           placeholder="First" expanded autofocus></b-input>
+                  <b-input size="is-medium"
+                           icon="account-card-details"
+                           minlength="2"
+                           maxlength="64"
+                           placeholder="Last" expanded></b-input>
+              </b-field>
               <b-field label="Email">
                 <b-input ref="email"
                          type="email"
@@ -18,23 +30,16 @@
                          icon="email"
                          minlength="5"
                          maxlength="256"
-                         placeholder="Your email address" autofocus></b-input>
+                         placeholder="Your email address"></b-input>
               </b-field>
-              <b-field grouped>
-                <b-field label="First name">
-                  <b-input size="is-medium"
-                           icon="account-card-details"
-                           minlength="2"
-                           maxlength="32"
-                           placeholder="First name"></b-input>
-                </b-field>
-                <b-field label="Last name" expanded>
-                  <b-input size="is-medium"
-                           icon="account-card-details"
-                           minlength="2"
-                           maxlength="64"
-                           placeholder="Last name"></b-input>
-                </b-field>
+              <b-field label="Username">
+                <b-input type="text"
+                         size="is-medium"
+                         icon="account"
+                         minlength="5"
+                         maxlength="32"
+                         placeholder="Your desired username">
+                </b-input>
               </b-field>
               <b-field label="Password">
                 <b-input type="password"
@@ -64,7 +69,7 @@
           </div>
           <p class="has-text-grey has-text-centered">
             <router-link to="/login">Login</router-link> &nbsp;·&nbsp;
-            <router-link to="/forgot">Forgot Password</router-link> &nbsp;·&nbsp;
+            <router-link to="/forgot">Forgot Password?</router-link> &nbsp;·&nbsp;
             <router-link to="/help">Need Help?</router-link>
           </p>
         </div>
@@ -94,7 +99,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped> 
+<style lang="scss"> 
 #register {
   font-size: 12px;
 }
@@ -108,5 +113,8 @@ export default {
   border-radius: 50%;
   -webkit-box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
   box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+}
+.pad-right {
+  padding-right: 20px;
 }
 </style>

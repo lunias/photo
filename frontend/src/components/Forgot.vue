@@ -19,6 +19,7 @@
             </form>
           </div>
           <p class="has-text-grey has-text-centered">
+            <router-link to="/login">Login</router-link> &nbsp;·&nbsp;
             <router-link to="/register">Register</router-link> &nbsp;·&nbsp;
             <router-link to="/help">Need Help?</router-link>
           </p>

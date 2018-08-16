@@ -1,36 +1,44 @@
 <template>
-<div class="home">
-  <section class="hero is-medium is-primary is-bold">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          Primary bold title
-        </h1>
-        <h2 class="subtitle">
-          Primary bold subtitle
-        </h2>
+  <div class="home">
+    <section class="hero is-medium is-primary is-bold">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            Primary bold title
+          </h1>
+          <h2 class="subtitle">
+            Primary bold subtitle
+          </h2>
+        </div>
       </div>
-    </div>
-  </section>
-  <parallax :fixed=true>
-    <img id="bg" src="@/assets/bg.jpg">
-  </parallax>
-  <section class="hero is-medium is-light is-bold">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          Primary bold title
-        </h1>
-        <h2 class="subtitle">
-          Primary bold subtitle
-        </h2>
-      </div>
-    </div>
-  </section>
-  <parallax>
-    <img id="bg" src="@/assets/bg2.jpg">
-  </parallax>
-</div>
+    </section>
+    <!--<div style="postion: relative;">-->
+    <parallax :fixed="true" :speed-factor="0.5">
+      <img id="bg" src="@/assets/bg.jpg">
+    </parallax>
+    <!--</div>-->
+    <!--<div style="postion: relative;">-->
+    <parallax :speed-factor="0.9">
+      <section class="hero is-medium is-light is-bold">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              Primary bold title
+            </h1>
+            <h2 class="subtitle">
+              Primary bold subtitle
+            </h2>
+          </div>
+        </div>
+      </section>
+    </parallax>
+    <!--</div>-->
+  <!--<div style="postion: relative;">-->
+    <parallax>
+    <img id="bg2" src="@/assets/bg2.jpg">
+    </parallax>
+    <!--</div>-->
+  </div>
 </template>
 
 <script>

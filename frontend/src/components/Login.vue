@@ -39,7 +39,7 @@
           </div>
           <p class="has-text-grey has-text-centered">
             <router-link to="/register">Register</router-link> &nbsp;·&nbsp;
-            <router-link to="/forgot">Forgot Password</router-link> &nbsp;·&nbsp;
+            <router-link to="/forgot">Forgot Password?</router-link> &nbsp;·&nbsp;
             <router-link to="/help">Need Help?</router-link>
           </p>
         </div>

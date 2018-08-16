@@ -37,7 +37,7 @@ export default new Router({
             component: Login,
 
             meta: {
-                guest: true
+                auth: false
             }
         },
         {
@@ -45,7 +45,7 @@ export default new Router({
             name: 'Register',
             component: Register,
             meta: {
-                guest: true
+                auth: false
             }
         },
         {
@@ -53,7 +53,7 @@ export default new Router({
             name: 'Forgot',
             component: Forgot,
             meta: {
-                guest: true
+                auth: false
             }
         },
         {
@@ -61,7 +61,7 @@ export default new Router({
             name: 'Profile',
             component: Profile,
             meta: {
-                requiresAuth: true
+              auth: false
             }
         },
         {
@@ -84,8 +84,7 @@ export default new Router({
             name: 'Admin',
             component: Admin,
             meta: {
-                requiresAuth: true,
-                is_admin : true
+                auth : 'admin'
             }
         }
     ]

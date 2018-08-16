@@ -65,11 +65,8 @@
             <router-link class="navbar-item" to="/profile">
               Profile
             </router-link>
-            <router-link class="navbar-item" to="/admin">
-              Admin
-            </router-link>
             <hr class="navbar-divider">
-            <a class="navbar-item">
+            <a class="navbar-item" @click="logout">
               Logout
             </a>
           </div>
@@ -149,7 +146,12 @@ export default {
         });
     },
     methods: {
-
+      logout() {
+        this.$auth.logout({
+          makeRequest: false,
+          redirect: '/login'
+        })
+      }
     },
     computed: {
 
