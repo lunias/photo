@@ -13,8 +13,6 @@ server:
 
 server.port.http: 80
 
-spring.profiles.include: "digital_ocean"
-
 spring:
   h2:
     console:
