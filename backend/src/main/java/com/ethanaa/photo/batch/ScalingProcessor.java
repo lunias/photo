@@ -1,6 +1,8 @@
 package com.ethanaa.photo.batch;
 
 import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoImage;
+import com.ethanaa.photo.model.PhotoType;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.imgscalr.Scalr;
@@ -40,7 +42,7 @@ public class ScalingProcessor implements ItemProcessor<Photo, Photo> {
     @Override
     public Photo process(Photo photo) throws Exception {
 
-        BufferedImage photoImage = photo.getRawImage();
+        BufferedImage photoImage = photo.getImage(PhotoType.RAW);
         if (photoImage.getWidth() > MAX_WIDTH) {
             photoImage = Scalr.resize(photoImage, Scalr.Mode.AUTOMATIC, MAX_WIDTH);
         }
@@ -50,7 +52,7 @@ public class ScalingProcessor implements ItemProcessor<Photo, Photo> {
                 .watermark(Positions.CENTER, WATERMARK, 0.8f)
                 .asBufferedImage();
 
-        photo.setScaledImage(photoImage);
+        photo.setPhotoImage(PhotoType.SCALED, new PhotoImage(photoImage, ""));
 
         LOG.info("Created scaled for {}", photo);
 
