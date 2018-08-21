@@ -2,34 +2,21 @@ package com.ethanaa.photo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Entity
-@Table(name = "PHOTO_IMAGE")
-@EntityListeners(AuditingEntityListener.class)
+@Embeddable
 public class PhotoImage implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     @JsonIgnore
     @Transient
     private BufferedImage image;
 
-    @Column
+    @Column(nullable = false)
     private String path;
 
     public PhotoImage(BufferedImage image, String path) {
@@ -38,24 +25,13 @@ public class PhotoImage implements Serializable {
         this.path = path;
     }
 
+    public PhotoImage(BufferedImage image) {
+
+        this.image = image;
+    }
+
     public PhotoImage() {
         //
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public BufferedImage getImage() {
@@ -72,19 +48,6 @@ public class PhotoImage implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PhotoImage that = (PhotoImage) o;
-        return Objects.equal(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 
     @Override

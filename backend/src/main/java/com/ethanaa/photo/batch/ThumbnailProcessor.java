@@ -29,10 +29,10 @@ public class ThumbnailProcessor implements ItemProcessor<Photo, Photo> {
                 .size(160, 160)
                 .asBufferedImage();
 
-        photo.setPhotoImage(PhotoType.THUMBNAIL, new PhotoImage(thumbnail, ""));
+        photo.setPhotoImage(PhotoType.THUMBNAIL, new PhotoImage(thumbnail));
         photo.setThumbSrc(thumbnail);
 
-        LOG.info("Created thumbnail for {}", photo);
+        LOG.info("Created {} for {}", PhotoType.THUMBNAIL, photo);
 
         return photo;
     }

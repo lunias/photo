@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.BiFunction;
+
 @Service
 @Transactional
 public class PhotoService {
@@ -21,12 +23,16 @@ public class PhotoService {
     private PhotoStorageService photoStorageService;
     private PhotoRepository photoRepository;
 
+    private BiFunction<Photo, PhotoType, String> writePathResolver;
+
     @Autowired
     public PhotoService(PhotoStorageService photoStorageService,
-                        PhotoRepository photoRepository) {
+                        PhotoRepository photoRepository,
+                        BiFunction<Photo, PhotoType, String> writePathResolver) {
 
         this.photoStorageService = photoStorageService;
         this.photoRepository = photoRepository;
+        this.writePathResolver = writePathResolver;
     }
 
     public Page<Photo> getPhotos(Pageable pageable) {
@@ -36,9 +42,11 @@ public class PhotoService {
 
     public Photo write(Photo photo, PhotoType photoType) throws PhotoWriteException {
 
+        photo.setPath(photoType, writePathResolver.apply(photo, photoType));
+
         photoStorageService.write(photo, photoType);
 
-        photo = photoRepository.save(photo);
+        //photo = photoRepository.save(photo); TODO extract to separate writer
         photo.clearImage(photoType);
 
         LOG.info("Wrote {} for photo: {}", photoType, photo);

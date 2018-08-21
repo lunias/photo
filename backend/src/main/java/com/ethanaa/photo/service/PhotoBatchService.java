@@ -1,6 +1,5 @@
 package com.ethanaa.photo.service;
 
-import com.ethanaa.photo.config.PhotoProperties;
 import com.ethanaa.photo.model.Photo;
 import com.ethanaa.photo.model.PhotoBatch;
 import com.ethanaa.photo.repository.PhotoBatchRepository;
@@ -34,20 +33,16 @@ public class PhotoBatchService {
 
     private static final long MAX_POLL_MS = 500L;
 
-    private String outputDirectory;
-
     private PhotoBatchRepository photoBatchRepository;
 
     private JobLauncher jobLauncher;
     private Job uploadJob;
 
     @Autowired
-    public PhotoBatchService(PhotoProperties photoProperties,
-                             PhotoBatchRepository photoBatchRepository,
+    public PhotoBatchService(PhotoBatchRepository photoBatchRepository,
                              JobLauncher jobLauncher,
                              Job uploadJob) {
 
-        this.outputDirectory = photoProperties.getOutputDir();
         this.photoBatchRepository = photoBatchRepository;
 
         this.jobLauncher = jobLauncher;
@@ -58,7 +53,7 @@ public class PhotoBatchService {
 
         LOG.info("{} uploading photo for batch {} (size: {})", authentication.getName(), batchId, photoFiles.length);
 
-        PhotoBatch photoBatch = new PhotoBatch(authentication, batchId, photoFiles, this.outputDirectory);
+        PhotoBatch photoBatch = new PhotoBatch(authentication, batchId, photoFiles);
 
         photoBatches.computeIfAbsent(batchId, (k) -> {
 

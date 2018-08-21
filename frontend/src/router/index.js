@@ -84,7 +84,7 @@ export default new Router({
             name: 'Admin',
             component: Admin,
             meta: {
-                auth : 'admin'
+                auth: false  //'admin'
             }
         }
     ]

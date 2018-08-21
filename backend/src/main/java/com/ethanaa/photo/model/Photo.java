@@ -17,7 +17,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +38,10 @@ public class Photo implements Serializable {
 
     @ElementCollection
     @MapKeyEnumerated(EnumType.STRING)
+    @MapKeyColumn(name = "photo_type", length = 32)
+    @Column(name = "photo_image")
+    @CollectionTable(name = "PHOTO_IMAGE",
+            joinColumns = @JoinColumn(name = "photo_id", referencedColumnName = "id"))
     private Map<PhotoType, PhotoImage> photoImages = new HashMap<>();
 
     @Lob
@@ -47,10 +50,13 @@ public class Photo implements Serializable {
 
     @Column(name = "original_filename")
     private String originalFilename;
+
     @Column
     private String extension;
+
     @Column(name = "content_type")
     private String contentType;
+
     @Column
     private long size;
 
@@ -66,7 +72,7 @@ public class Photo implements Serializable {
     })
     private PhotoBatch photoBatch;
 
-    public Photo(String outputDirectory, String username, String batchId, MultipartFile photoFile, LocalDateTime createdAt) throws IOException {
+    public Photo(MultipartFile photoFile) throws IOException {
 
         if (photoFile.isEmpty()) {
             throw new RuntimeException("Empty file");
@@ -78,26 +84,15 @@ public class Photo implements Serializable {
             throw new RuntimeException("Invalid filename");
         }
 
-        String rawPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoType.RAW, batchId);
-        this.photoImages.put(PhotoType.RAW,
-                new PhotoImage(ImageIO.read(photoFile.getInputStream()), rawPath));
-
         this.extension = Files.getFileExtension(this.originalFilename);
         this.contentType = photoFile.getContentType();
         this.size = photoFile.getSize();
+
+        setPhotoImage(PhotoType.RAW, new PhotoImage(ImageIO.read(photoFile.getInputStream())));
     }
 
     public Photo() {
         //
-    }
-
-    private static String createPath(String outputDir, String username, LocalDate createDate, PhotoType type, String batchId) {
-
-        return outputDir + username +
-                "/" + createDate +
-                "/" + batchId +
-                "/" + type +
-                "/";
     }
 
     @JsonIgnore
@@ -108,9 +103,9 @@ public class Photo implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public PhotoImage setPhotoImage(PhotoType type, PhotoImage photoImage) {
+    public void setPhotoImage(PhotoType type, PhotoImage photoImage) {
 
-        return this.photoImages.put(type, photoImage);
+        photoImages.put(type, photoImage);
     }
 
     @JsonIgnore
@@ -133,6 +128,14 @@ public class Photo implements Serializable {
         }
 
         return null;
+    }
+
+    public void setPath(PhotoType type, String path) {
+
+        PhotoImage photoImage = photoImages.get(type);
+        if (photoImage != null) {
+            photoImage.setPath(path);
+        }
     }
 
     public void clearImage(PhotoType type) {
@@ -182,7 +185,8 @@ public class Photo implements Serializable {
             ImageIO.write(thumbImage, getExtension(), boas);
             boas.flush();
 
-            this.thumbSrc = "data:" + this.getContentType() + ";charset=utf-8;base64," + Base64.getEncoder().encodeToString(boas.toByteArray());
+            this.thumbSrc = "data:" + this.getContentType() + ";charset=utf-8;base64,"
+                    + Base64.getEncoder().encodeToString(boas.toByteArray());
 
         } catch (IOException ioe) {
             LOG.error("Failed to set thumbSrc", ioe);

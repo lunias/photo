@@ -52,9 +52,9 @@ public class ScalingProcessor implements ItemProcessor<Photo, Photo> {
                 .watermark(Positions.CENTER, WATERMARK, 0.8f)
                 .asBufferedImage();
 
-        photo.setPhotoImage(PhotoType.SCALED, new PhotoImage(photoImage, ""));
+        photo.setPhotoImage(PhotoType.SCALED, new PhotoImage(photoImage));
 
-        LOG.info("Created scaled for {}", photo);
+        LOG.info("Created {} for {}", PhotoType.SCALED, photo);
 
         return photo;
     }
