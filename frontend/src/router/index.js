@@ -83,9 +83,11 @@ export default new Router({
             path: '/admin',
             name: 'Admin',
             component: Admin,
+            /*
             meta: {
                 auth: false  //'admin'
             }
+            */
         }
     ]
 })
