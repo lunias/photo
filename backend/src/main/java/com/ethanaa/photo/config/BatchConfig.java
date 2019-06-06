@@ -74,7 +74,7 @@ public class BatchConfig {
         photoProcessorChain.setDelegates(Arrays.asList(thumbnailProcessor, scalingProcessor));
 
         CompositeItemWriter<Photo> photoWriterChain = new CompositeItemWriter<>();
-        photoWriterChain.setDelegates(Arrays.asList(thumbnailPhotoWriter, scaledPhotoWriter, rawFileWriter));
+        photoWriterChain.setDelegates(Arrays.asList(rawFileWriter, scaledPhotoWriter, thumbnailPhotoWriter));
 
         return stepBuilderFactory.get("processPhotos")
                 .<Photo, Photo> chunk(5)

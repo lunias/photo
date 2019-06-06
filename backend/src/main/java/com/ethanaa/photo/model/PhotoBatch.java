@@ -19,7 +19,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "PHOTO_BATCH",
-        indexes = { @Index(name = "username_idx",  columnList="username", unique = false) })
+        indexes = { @Index(name = "username_idx",  columnList="username") })
 @EntityListeners(AuditingEntityListener.class)
 public class PhotoBatch implements Iterable<Photo>, Serializable {
 
@@ -44,15 +44,14 @@ public class PhotoBatch implements Iterable<Photo>, Serializable {
 
     public PhotoBatch(Authentication authentication,
                       String id,
-                      MultipartFile[] photoFiles,
-                      String outputDirectory) throws IOException {
+                      MultipartFile[] photoFiles) throws IOException {
 
         this.createdAt = LocalDateTime.now();
 
         this.id = new PhotoBatchId(id, authentication.getName());
 
         for (MultipartFile photoFile : photoFiles) {
-            addPhoto(new Photo(outputDirectory, authentication.getName(), id, photoFile, this.createdAt));
+            addPhoto(new Photo(photoFile));
         }
     }
 

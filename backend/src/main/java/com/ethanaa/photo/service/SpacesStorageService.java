@@ -1,10 +1,11 @@
 package com.ethanaa.photo.service;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
-import com.amazonaws.services.s3.transfer.*;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
+import com.amazonaws.services.s3.transfer.model.UploadResult;
 import com.ethanaa.photo.config.Profiles;
 import com.ethanaa.photo.config.SpacesProperties;
 import com.ethanaa.photo.model.Photo;
@@ -22,7 +23,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -71,7 +71,7 @@ public class SpacesStorageService implements PhotoStorageService {
                 ));
 
         try {
-            upload.waitForCompletion();
+            UploadResult uploadResult = upload.waitForUploadResult();
         } catch (Exception e) {
             throw new PhotoWriteException(photo, photoType, e);
         }
@@ -117,11 +117,7 @@ public class SpacesStorageService implements PhotoStorageService {
 
             while (true) {
 
-                for (Iterator<?> iterator =
-                     bucketListing.getObjectSummaries().iterator();
-                     iterator.hasNext();) {
-
-                    S3ObjectSummary summary = (S3ObjectSummary) iterator.next();
+                for (S3ObjectSummary summary : bucketListing.getObjectSummaries()) {
                     s3Client.deleteObject(rootBucket, summary.getKey());
                 }
 

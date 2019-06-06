@@ -2,7 +2,6 @@ package com.ethanaa.photo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.io.Files;
@@ -18,12 +17,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "PHOTO")
@@ -40,24 +36,13 @@ public class Photo implements Serializable {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "raw_path")
-    private String rawPath;
-    @Column(name = "thumb_path")
-    private String thumbPath;
-    @Column(name = "scaled_path")
-    private String scaledPath;
-
-    @JsonIgnore
-    @Transient
-    private BufferedImage rawImage;
-
-    @JsonIgnore
-    @Transient
-    private BufferedImage thumbImage;
-
-    @JsonIgnore
-    @Transient
-    private BufferedImage scaledImage;
+    @ElementCollection
+    @MapKeyEnumerated(EnumType.STRING)
+    @MapKeyColumn(name = "photo_type", length = 32)
+    @Column(name = "photo_image")
+    @CollectionTable(name = "PHOTO_IMAGE",
+            joinColumns = @JoinColumn(name = "photo_id", referencedColumnName = "id"))
+    private Map<PhotoType, PhotoImage> photoImages = new HashMap<>();
 
     @Lob
     @Column(name = "thumb_src", columnDefinition = "CLOB")
@@ -65,10 +50,13 @@ public class Photo implements Serializable {
 
     @Column(name = "original_filename")
     private String originalFilename;
+
     @Column
     private String extension;
+
     @Column(name = "content_type")
     private String contentType;
+
     @Column
     private long size;
 
@@ -84,7 +72,7 @@ public class Photo implements Serializable {
     })
     private PhotoBatch photoBatch;
 
-    public Photo(String outputDirectory, String username, String batchId, MultipartFile photoFile, LocalDateTime createdAt) throws IOException {
+    public Photo(MultipartFile photoFile) throws IOException {
 
         if (photoFile.isEmpty()) {
             throw new RuntimeException("Empty file");
@@ -96,88 +84,65 @@ public class Photo implements Serializable {
             throw new RuntimeException("Invalid filename");
         }
 
-        this.rawImage = ImageIO.read(photoFile.getInputStream());
-
         this.extension = Files.getFileExtension(this.originalFilename);
         this.contentType = photoFile.getContentType();
         this.size = photoFile.getSize();
 
-        this.rawPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoType.RAW, batchId);
-        this.thumbPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoType.THUMBNAIL, batchId);
-        this.scaledPath = createPath(outputDirectory, username, createdAt.toLocalDate(), PhotoType.SCALED, batchId);
-
-        this.rawPath += this.originalFilename;
-        this.thumbPath += this.originalFilename;
-        this.scaledPath += this.originalFilename;
+        setPhotoImage(PhotoType.RAW, new PhotoImage(ImageIO.read(photoFile.getInputStream())));
     }
 
     public Photo() {
         //
     }
 
-    private static String createPath(String outputDir, String username, LocalDate createDate, PhotoType type, String batchId) {
-
-        return outputDir + username +
-                "/" + createDate +
-                "/" + batchId +
-                "/" + type +
-                "/";
-    }
-
-    public String getPath(PhotoType type) {
-
-        switch (type) {
-
-            case RAW:
-                return this.rawPath;
-            case THUMBNAIL:
-                return this.thumbPath;
-            case SCALED:
-                return this.scaledPath;
-        }
-
-        return "";
-    }
-
     @JsonIgnore
     public List<String> getPaths() {
 
-        List<String> paths = new ArrayList<>(PhotoType.values().length);
-        for (PhotoType photoType : PhotoType.values()) {
-            paths.add(getPath(photoType));
-        }
-
-        return paths;
+        return photoImages.values().stream()
+                .map(PhotoImage::getPath)
+                .collect(Collectors.toList());
     }
 
+    public void setPhotoImage(PhotoType type, PhotoImage photoImage) {
+
+        photoImages.put(type, photoImage);
+    }
+
+    @JsonIgnore
     public BufferedImage getImage(PhotoType type) {
 
-        switch (type) {
-
-            case RAW:
-                return this.rawImage;
-            case THUMBNAIL:
-                return this.thumbImage;
-            case SCALED:
-                return this.scaledImage;
+        PhotoImage photoImage = photoImages.get(type);
+        if (photoImage != null) {
+            return photoImage.getImage();
         }
 
         return null;
     }
 
+    @JsonIgnore
+    public String getPath(PhotoType type) {
+
+        PhotoImage photoImage = photoImages.get(type);
+        if (photoImage != null) {
+            return photoImage.getPath();
+        }
+
+        return null;
+    }
+
+    public void setPath(PhotoType type, String path) {
+
+        PhotoImage photoImage = photoImages.get(type);
+        if (photoImage != null) {
+            photoImage.setPath(path);
+        }
+    }
+
     public void clearImage(PhotoType type) {
 
-        switch (type) {
-
-            case RAW:
-                this.setRawImage(null);
-                break;
-            case SCALED:
-                this.setScaledImage(null);
-                break;
-            case THUMBNAIL:
-                this.setThumbImage(null);
-                break;
+        PhotoImage photoImage = photoImages.get(type);
+        if (photoImage != null) {
+            photoImage.setImage(null);
         }
     }
 
@@ -197,45 +162,19 @@ public class Photo implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public String getRawPath() {
-        return rawPath;
+    public Map<PhotoType, PhotoImage> getPhotoImages() {
+        return photoImages;
     }
 
-    public void setRawPath(String rawPath) {
-        this.rawPath = rawPath;
+    public void setPhotoImages(Map<PhotoType, PhotoImage> photoImages) {
+        this.photoImages = photoImages;
     }
 
-    public String getThumbPath() {
-        return thumbPath;
+    public String getThumbSrc() {
+        return thumbSrc;
     }
 
-    public void setThumbPath(String thumbPath) {
-        this.thumbPath = thumbPath;
-    }
-
-    public String getScaledPath() {
-        return scaledPath;
-    }
-
-    public void setScaledPath(String scaledPath) {
-        this.scaledPath = scaledPath;
-    }
-
-    public BufferedImage getRawImage() {
-        return rawImage;
-    }
-
-    public void setRawImage(BufferedImage rawImage) {
-        this.rawImage = rawImage;
-    }
-
-    public BufferedImage getThumbImage() {
-        return thumbImage;
-    }
-
-    public void setThumbImage(BufferedImage thumbImage) {
-
-        this.thumbImage = thumbImage;
+    public void setThumbSrc(BufferedImage thumbImage) {
 
         if (thumbImage == null) {
             return;
@@ -246,23 +185,12 @@ public class Photo implements Serializable {
             ImageIO.write(thumbImage, getExtension(), boas);
             boas.flush();
 
-            this.thumbSrc = "data:" + this.getContentType() + ";charset=utf-8;base64," + Base64.getEncoder().encodeToString(boas.toByteArray());
+            this.thumbSrc = "data:" + this.getContentType() + ";charset=utf-8;base64,"
+                    + Base64.getEncoder().encodeToString(boas.toByteArray());
 
         } catch (IOException ioe) {
             LOG.error("Failed to set thumbSrc", ioe);
         }
-    }
-
-    public BufferedImage getScaledImage() {
-        return scaledImage;
-    }
-
-    public void setScaledImage(BufferedImage scaledImage) {
-        this.scaledImage = scaledImage;
-    }
-
-    public String getThumbSrc() {
-        return thumbSrc;
     }
 
     public String getOriginalFilename() {

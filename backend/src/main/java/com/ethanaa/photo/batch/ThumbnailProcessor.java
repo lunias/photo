@@ -1,6 +1,8 @@
 package com.ethanaa.photo.batch;
 
 import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.model.PhotoImage;
+import com.ethanaa.photo.model.PhotoType;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +25,14 @@ public class ThumbnailProcessor implements ItemProcessor<Photo, Photo> {
     @Override
     public Photo process(Photo photo) throws Exception {
 
-        BufferedImage thumbnail = Thumbnails.of(photo.getRawImage())
+        BufferedImage thumbnail = Thumbnails.of(photo.getImage(PhotoType.RAW))
                 .size(160, 160)
                 .asBufferedImage();
 
-        photo.setThumbImage(thumbnail);
+        photo.setPhotoImage(PhotoType.THUMBNAIL, new PhotoImage(thumbnail));
+        photo.setThumbSrc(thumbnail);
 
-        LOG.info("Created thumbnail for {}", photo);
+        LOG.info("Created {} for {}", PhotoType.THUMBNAIL, photo);
 
         return photo;
     }
