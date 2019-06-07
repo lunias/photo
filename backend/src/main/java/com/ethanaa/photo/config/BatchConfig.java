@@ -7,10 +7,12 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,27 +56,30 @@ public class BatchConfig {
     }
 
     @Bean
-    Job uploadJob(Step processPhoto) {
+    Job uploadJob(Step processPhotos) {
 
         return jobBuilderFactory.get("uploadJob")
                 .incrementer(new RunIdIncrementer())
-                .start(processPhoto)
+                .start(processPhotos)
                 .build();
     }
 
     @Bean
-    Step processPhoto(UploadedPhotoReader uploadedPhotoReader,
+    Step processPhotos(UploadedPhotoReader uploadedPhotoReader,
                        ThumbnailProcessor thumbnailProcessor,
                        ScalingProcessor scalingProcessor,
                        ThumbnailPhotoWriter thumbnailPhotoWriter,
                        ScaledPhotoWriter scaledPhotoWriter,
-                       RawFileWriter rawFileWriter) {
+                       RawFileWriter rawFileWriter,
+                       DatabaseWriter databaseWriter) {
 
         CompositeItemProcessor<Photo, Photo> photoProcessorChain = new CompositeItemProcessor<>();
-        photoProcessorChain.setDelegates(Arrays.asList(thumbnailProcessor, scalingProcessor));
+        photoProcessorChain.setDelegates(
+                Arrays.asList(thumbnailProcessor, scalingProcessor));
 
         CompositeItemWriter<Photo> photoWriterChain = new CompositeItemWriter<>();
-        photoWriterChain.setDelegates(Arrays.asList(rawFileWriter, scaledPhotoWriter, thumbnailPhotoWriter));
+        photoWriterChain.setDelegates(
+                Arrays.asList(rawFileWriter, scaledPhotoWriter, thumbnailPhotoWriter, databaseWriter));
 
         return stepBuilderFactory.get("processPhotos")
                 .<Photo, Photo> chunk(5)

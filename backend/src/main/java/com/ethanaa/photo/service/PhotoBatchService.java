@@ -93,9 +93,9 @@ public class PhotoBatchService {
 
         if (photo == null) {
             photoBatches.remove(batchId);
+        } else {
+            LOG.debug("Got photo: {}", photo);
         }
-
-        LOG.debug("Got photo: {}", photo);
 
         return photo;
     }

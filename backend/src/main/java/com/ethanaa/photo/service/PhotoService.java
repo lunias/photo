@@ -4,6 +4,8 @@ import com.ethanaa.photo.model.Photo;
 import com.ethanaa.photo.model.PhotoType;
 import com.ethanaa.photo.model.exception.PhotoWriteException;
 import com.ethanaa.photo.repository.PhotoRepository;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.function.BiFunction;
 
 @Service
@@ -47,11 +50,21 @@ public class PhotoService {
         photoStorageService.write(photo, photoType);
 
         //photo = photoRepository.save(photo); TODO extract to separate writer
-        photo.clearImage(photoType);
 
         LOG.info("Wrote {} for photo: {}", photoType, photo);
 
         return photo;
+    }
+
+    public <T extends Photo> Iterable<T> saveAll(Iterable<T> photos) {
+
+        Iterable<T> savedPhotos = photoRepository.saveAll(photos);
+
+        LOG.info("Wrote [{}] photo(s) to the database: \n\t{}",
+                Iterables.size(savedPhotos),
+                Joiner.on("\n\t").join(savedPhotos));
+
+        return savedPhotos;
     }
 
     public void delete(Photo photo) {
