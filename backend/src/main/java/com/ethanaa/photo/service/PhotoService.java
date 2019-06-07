@@ -49,8 +49,6 @@ public class PhotoService {
 
         photoStorageService.write(photo, photoType);
 
-        //photo = photoRepository.save(photo); TODO extract to separate writer
-
         LOG.info("Wrote {} for photo: {}", photoType, photo);
 
         return photo;
