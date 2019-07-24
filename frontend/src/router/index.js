@@ -61,7 +61,7 @@ export default new Router({
             name: 'Profile',
             component: Profile,
             meta: {
-              auth: false
+              auth: true
             }
         },
         {
@@ -83,11 +83,9 @@ export default new Router({
             path: '/admin',
             name: 'Admin',
             component: Admin,
-            /*
             meta: {
-                auth: false  //'admin'
+                auth: 'read'
             }
-            */
         }
     ]
 })

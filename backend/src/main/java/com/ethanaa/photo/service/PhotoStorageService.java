@@ -1,9 +1,9 @@
 package com.ethanaa.photo.service;
 
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.model.PhotoType;
-import com.ethanaa.photo.model.exception.PhotoDeleteException;
-import com.ethanaa.photo.model.exception.PhotoWriteException;
+import com.ethanaa.photo.entity.Photo;
+import com.ethanaa.photo.entity.PhotoType;
+import com.ethanaa.photo.entity.exception.PhotoDeleteException;
+import com.ethanaa.photo.entity.exception.PhotoWriteException;
 
 public interface PhotoStorageService {
 

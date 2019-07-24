@@ -81,6 +81,7 @@
           class="button is-primary"
           :post-action="postAction"
           :extensions="extensions"
+          :headers="headers"
           :accept="accept"
           :multiple="multiple"
           :directory="directory"
@@ -339,6 +340,9 @@ export default {
             thread: 3,
             name: 'file',
             postAction: '/api/photos/upload',
+            headers: {
+               'Authorization': 'Bearer ' + this.$auth.token().split(';')[0]
+            },
             autoCompress: 1024 * 1024,
             uploadAuto: false,
             isOption: false,            

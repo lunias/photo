@@ -1,18 +1,16 @@
 package com.ethanaa.photo.config;
 
 import com.ethanaa.photo.batch.*;
-import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.entity.Photo;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;

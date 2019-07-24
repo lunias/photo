@@ -6,10 +6,10 @@
       <div class="container has-text-centered">
         <img id="logo" src="@/assets/logo.png">
         <h1 class="title">
-          Primary bold title
+          ANDREA GV
         </h1>
         <h2 class="subtitle">
-          Primary bold subtitle
+          PHOTOGRAPHY
         </h2>
         <div class="container scroll-down" v-scroll-to="'#routerView'">
           <div class="chevron"></div>
@@ -25,7 +25,8 @@
 
     <div class="navbar-brand" v-scroll-to="'#app'">
       <router-link class="navbar-item" to="/">
-        <img src="@/assets/logo.png" alt="andreagv.com" width="112" height="28">
+        <img src="@/assets/logo.png" alt="andreagv.com" width="50" height="30">
+        <p>&nbsp;&nbsp;Andrea GV</p>
       </router-link>
       <div class="navbar-burger burger" data-target="photoMenu">
         <span></span>
@@ -200,7 +201,7 @@ $link-focus-border: $primary;
 // Navbar
 $navbar-height: 4.25rem;
 $navbar-item-hover-color: $info;
-$navbar-item-active-color: $info;
+$navbar-item-active-color: $primary;
 $navbar-dropdown-item-hover-color: $info;
 $navbar-dropdown-item-active-color: $info;
 
@@ -322,7 +323,7 @@ $footer-background-color: $dark;
   top: 10px;
   height: 100%;
   width: 51%;
-  background: #fff;
+  background: #97262C;
 }
 
 .chevron:before {

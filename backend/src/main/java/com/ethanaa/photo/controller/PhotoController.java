@@ -1,15 +1,10 @@
 package com.ethanaa.photo.controller;
 
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.repository.PhotoRepository;
+import com.ethanaa.photo.entity.Photo;
 import com.ethanaa.photo.service.PhotoBatchService;
 import com.ethanaa.photo.service.PhotoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,11 +54,5 @@ public class PhotoController {
         photoService.deleteAll();
 
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-
-        return ResponseEntity.ok("Hello there from backend!");
     }
 }

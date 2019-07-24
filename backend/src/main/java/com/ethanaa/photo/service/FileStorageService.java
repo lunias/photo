@@ -2,10 +2,10 @@ package com.ethanaa.photo.service;
 
 import com.ethanaa.photo.config.PhotoProperties;
 import com.ethanaa.photo.config.Profiles;
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.model.PhotoType;
-import com.ethanaa.photo.model.exception.PhotoDeleteException;
-import com.ethanaa.photo.model.exception.PhotoWriteException;
+import com.ethanaa.photo.entity.Photo;
+import com.ethanaa.photo.entity.PhotoType;
+import com.ethanaa.photo.entity.exception.PhotoDeleteException;
+import com.ethanaa.photo.entity.exception.PhotoWriteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

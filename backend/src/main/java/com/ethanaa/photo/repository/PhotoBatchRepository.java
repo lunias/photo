@@ -1,7 +1,7 @@
 package com.ethanaa.photo.repository;
 
-import com.ethanaa.photo.model.PhotoBatch;
-import com.ethanaa.photo.model.PhotoBatchId;
+import com.ethanaa.photo.entity.PhotoBatch;
+import com.ethanaa.photo.entity.PhotoBatchId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;

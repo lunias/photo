@@ -1,8 +1,9 @@
 package com.ethanaa.photo.service;
 
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.model.PhotoBatch;
+import com.ethanaa.photo.entity.Photo;
+import com.ethanaa.photo.entity.PhotoBatch;
 import com.ethanaa.photo.repository.PhotoBatchRepository;
+import com.ethanaa.photo.security.model.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -51,7 +52,10 @@ public class PhotoBatchService {
 
     public void submit(Authentication authentication, String batchId, MultipartFile[] photoFiles) throws IOException {
 
-        LOG.info("{} uploading photo for batch {} (size: {})", authentication.getName(), batchId, photoFiles.length);
+        String username = ((UserContext) authentication.getPrincipal()).getUsername();
+
+        LOG.info("{} uploading photo for batch {} (size: {})",
+                username, batchId, photoFiles.length);
 
         PhotoBatch photoBatch = new PhotoBatch(authentication, batchId, photoFiles);
 
@@ -60,7 +64,7 @@ public class PhotoBatchService {
             photoBatchRepository.save(photoBatch);
 
             try {
-                runUploadJob(batchId, authentication.getName());
+                runUploadJob(batchId, username);
             } catch (JobParametersInvalidException jpie) {
                 LOG.error("Invalid job parameters", jpie);
             } catch (JobExecutionAlreadyRunningException jeare) {
@@ -106,7 +110,7 @@ public class PhotoBatchService {
 
         LOG.debug("Running upload job: {}/{}", username, batchId);
 
-        jobLauncher.run(uploadJob, new JobParameters(new HashMap<String, JobParameter>() {
+        jobLauncher.run(uploadJob, new JobParameters(new HashMap<>() {
             {
                 put("batchId", new JobParameter(batchId, true));
                 put("username", new JobParameter(username, true));

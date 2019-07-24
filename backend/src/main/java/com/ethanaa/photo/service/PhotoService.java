@@ -1,8 +1,8 @@
 package com.ethanaa.photo.service;
 
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.model.PhotoType;
-import com.ethanaa.photo.model.exception.PhotoWriteException;
+import com.ethanaa.photo.entity.Photo;
+import com.ethanaa.photo.entity.PhotoType;
+import com.ethanaa.photo.entity.exception.PhotoWriteException;
 import com.ethanaa.photo.repository.PhotoRepository;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.function.BiFunction;
 
 @Service
@@ -61,6 +60,10 @@ public class PhotoService {
         LOG.info("Wrote [{}] photo(s) to the database: \n\t{}",
                 Iterables.size(savedPhotos),
                 Joiner.on("\n\t").join(savedPhotos));
+
+        for (Photo photo : savedPhotos) {
+            photo.clearImages();
+        }
 
         return savedPhotos;
     }

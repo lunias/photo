@@ -18,6 +18,8 @@
                          icon="email"
                          minlength="5"
                          maxlength="256"
+                         v-model="username"
+                         @keyup.enter="login(username, password)"
                          placeholder="Your email address" autofocus></b-input>
               </b-field>
               <b-field label="Password">
@@ -26,6 +28,8 @@
                          icon="key"
                          minlength="8"
                          maxlength="128"
+                         v-model="password"
+                         @keyup.enter="login(username, password)"
                          placeholder="Password" password-reveal>
                 </b-input>
               </b-field>
@@ -34,7 +38,7 @@
                   Remember me
                 </b-checkbox>
               </div>
-              <button class="button is-block is-info is-large is-fullwidth" @click="login">Login</button>
+              <button class="button is-block is-info is-large is-fullwidth" @click="login(username, password)">Login</button>
             </form>
           </div>
           <p class="has-text-grey has-text-centered">
@@ -54,16 +58,40 @@ export default {
     name: 'Login',
     data () {
         return {
-            rememberMe: false
+            rememberMe: false,
+            username: '',
+            password: '',
+            error: null,
+            animated: false
         }
     },
     mounted: function() {
         this.$refs.email.focus()
     },
     methods: {
-        login() {
-            console.log("logging in")
-        }
+      login (username, password) {
+      console.log("got username " + username + " and password " + password)
+        this.$auth.login({
+          data: {
+            username: username,
+            password: password,
+            applications: ['photo']
+          },
+          redirect: '/',
+          success: () => {
+          },
+          error: (error) => {
+            this.animated = true
+            setTimeout(() => {
+              this.animated = false
+              this.error = error
+            }, 500)
+          }
+        })
+      },
+      clearError () {
+        this.error = null
+      }
     }
   }
 </script>

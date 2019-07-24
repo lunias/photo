@@ -1,8 +1,8 @@
 package com.ethanaa.photo.batch;
 
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.model.PhotoImage;
-import com.ethanaa.photo.model.PhotoType;
+import com.ethanaa.photo.entity.Photo;
+import com.ethanaa.photo.entity.PhotoImage;
+import com.ethanaa.photo.entity.PhotoType;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.imgscalr.Scalr;

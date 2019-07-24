@@ -1,8 +1,8 @@
 package com.ethanaa.photo.config;
 
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.model.PhotoBatch;
-import com.ethanaa.photo.model.PhotoType;
+import com.ethanaa.photo.entity.Photo;
+import com.ethanaa.photo.entity.PhotoBatch;
+import com.ethanaa.photo.entity.PhotoType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -60,6 +60,8 @@ public class WritePathResolverConfig {
                     .append(photoBatch.getCreatedAt().toLocalDate())
                     .append("/")
                     .append(photoBatch.getId().getId())
+                    .append("/")
+                    .append(photoType)
                     .append("/")
                     .append(photo.getOriginalFilename());
 

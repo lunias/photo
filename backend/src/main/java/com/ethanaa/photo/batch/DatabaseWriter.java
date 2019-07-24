@@ -1,6 +1,6 @@
 package com.ethanaa.photo.batch;
 
-import com.ethanaa.photo.model.Photo;
+import com.ethanaa.photo.entity.Photo;
 import com.ethanaa.photo.service.PhotoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -4,10 +4,10 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Primary bold title
+            Andrea GV
           </h1>
           <h2 class="subtitle">
-            Primary bold subtitle
+            Photography
           </h2>
         </div>
       </div>

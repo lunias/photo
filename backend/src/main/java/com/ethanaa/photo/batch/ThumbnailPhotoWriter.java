@@ -1,10 +1,8 @@
 package com.ethanaa.photo.batch;
 
-import com.ethanaa.photo.model.Photo;
-import com.ethanaa.photo.model.PhotoType;
-import com.ethanaa.photo.repository.PhotoRepository;
+import com.ethanaa.photo.entity.Photo;
+import com.ethanaa.photo.entity.PhotoType;
 import com.ethanaa.photo.service.PhotoService;
-import com.ethanaa.photo.service.PhotoStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
