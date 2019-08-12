@@ -1,0 +1,49 @@
+version: '3'
+
+resources:
+  database:
+    type: postgres
+    options:
+      class: ${POSTGRES_INSTANCE_CLASS}
+      storage: ${POSTGRES_STORAGE_SIZE}
+      version: ${POSTGRES_VERSION}
+services:
+  web:
+    build:
+      path: .
+      manifest: ./backend/Dockerfile
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION=us-east-1
+      - PHOTO_BUCKET
+      - PYTHONPATH=/:/photo
+    links:
+      - admin
+    resources:
+      - database
+    port: 8080
+    health:
+      grace: 60
+      interval: 30
+      path: /actuator/health
+      timeout: 5
+    scale:
+      count: 1
+    command: start-web
+  admin:
+    build:
+      path: .
+      manifest: ./admin-server/Dockerfile
+    links:
+      - web
+    port: 8082
+    health:
+      grace: 60
+      interval: 30
+      path: /actuator/health
+      timeout: 5
+    scale:
+      count: 1
+    command: start-admin
+

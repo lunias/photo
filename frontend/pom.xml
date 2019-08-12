@@ -49,6 +49,16 @@
 							  <arguments>install</arguments>
 						  </configuration>
 					  </execution>
+					  <!-- Rebuild node-sass -->
+					  <execution>
+						  <id>npm rebuild node-sass</id>
+						  <goals>
+							  <goal>npm</goal>
+						  </goals>
+						  <configuration>
+							  <arguments>rebuild node-sass</arguments>
+              </configuration>
+					  </execution>
 					  <!-- Build and minify static files -->
 					  <execution>
 						  <id>npm run build</id>

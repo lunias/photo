@@ -1,0 +1,10 @@
+* Running web-server
+#+BEGIN_SRC bash
+docker build -t web-server -f backend/Dockerfile .
+docker run -p 8080:8080 --rm -it web-server:latest
+#+END_SRC
+* Running admin-server
+#+BEGIN_SRC bash
+docker build -t admin-server -f admin-server/Dockerfile .
+docker run -p 8082:8082 --rm -it admin-server:latest
+#+END_SRC

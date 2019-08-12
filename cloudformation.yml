@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Resources for photo
+
+###############################################################################
+Parameters:
+###############################################################################
+
+  AppName:
+    Type: String
+    Description: Application name
+    Default: 'photo'
+
+  StageParam:
+    Type: String
+    Description: Stage / environment name
+    Default: 'prod'
+
+  PhotoBucketName:
+    Type: String
+    Description: photo S3 bucket name
+    Default: 'prod-agvphoto-photos'
+
+###############################################################################
+Resources:
+###############################################################################
+
+  CallRecordingS3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+      BucketName: !Sub ${CallRecordingBucketName}
+      Tags:
+        - Key: CloudFormationStack
+          Value: !Ref AWS::StackName
+
+  PhotoS3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: !Sub ${PhotoBucketName}
+      Tags:
+        - Key: CloudFormationStack
+          Value: !Ref AWS::StackName
+
+  PhotoIAMPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: !Sub 'IAM Managed Policy Attached to ${StageParam}-${AppName}'
+      ManagedPolicyName: !Sub '${StageParam}-${AppName}'
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Action:
+              - s3:*
+            Effect: Allow
+            Resource: [
+              !Join [ "", [ "arn:aws:s3:::", !Ref PhotoS3Bucket ] ],
+              !Join [ "", [ "arn:aws:s3:::", !Ref PhotoS3Bucket, "/*" ] ]
+            ]
+
+###############################################################################
+Outputs:
+###############################################################################
+  PhotoS3Bucket:
+    Value: !Ref PhotoS3Bucket
+  ConvoxIAMPolicy:
+    Value: !Ref PhotoIAMPolicy
+
