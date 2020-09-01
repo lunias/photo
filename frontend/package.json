@@ -15,7 +15,7 @@
     "@websanova/vue-auth": "^2.21.14-beta",
     "@xkeshi/image-compressor": "^0.5.3",
     "axios": "^0.18.0",
-    "buefy": "^0.6.6",
+    "buefy": "^0.7.2",
     "bulma-modal-fx": "^1.1.1",
     "cropperjs": "^1.4.1",
     "vue": "^2.5.2",
